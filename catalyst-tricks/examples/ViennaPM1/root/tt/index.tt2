@@ -1,0 +1,3 @@
+<h1>Welcome!</h1>
+<p>The message is: [% message %]</p>
+<p><a href='dump/some_file.txt'>let's dump some file</a></p>

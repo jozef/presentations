@@ -12,8 +12,8 @@
 <meta name="company" content="Soiton, a.s." />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- configuration parameters -->
-<meta name="defaultView" content="slideshow" />
-<!-- <meta name="defaultView" content="outline" /> -->
+<!-- <meta name="defaultView" content="slideshow" /> -->
+<meta name="defaultView" content="outline" />
 <meta name="controlVis" content="hidden" />
 <!-- style sheet links -->
 <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
@@ -22,6 +22,11 @@
 <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
 <!-- S5 JS -->
 <script src="ui/default/slides.js" type="text/javascript"></script>
+<!-- syntax highlighting -->
+<link rel="stylesheet" type="text/css" href="ui/sh/sh_style.css" />
+<script type="text/javascript" src="ui/sh/sh_main.js"></script>
+<script type="text/javascript" src="ui/sh/sh_perl.js"></script>
+
 </head>
 <body>
 
@@ -50,14 +55,14 @@
 </div>
 
 <div class="slide">
-	<h1>really short intro to Catalyst</h1>
+	<h1>Short intro to Catalyst</h1>
+	<p style="text-align: center; float: right;"><img src="catalyst-tricks/catalyst_130pix.gif" alt="" title="Catalyst"></p>
 	<ul>
 		<li><a href='http://www.catalystframework.org/'>Catalyst = MVC web framework</a></li>
-		<li>let's say MVC</li>
 		<li>in Catalyst everything = $c</li>
 		<li><pre>$c->model()      - use base 'Catalyst::Model';</pre></li>
-		<li><pre>$c->view()       - use base 'Catalyst::View';</li>
-		<li><pre>$c->controller() - use base 'Catalyst::Controller';</li>
+		<li><pre>$c->view()       - use base 'Catalyst::View';</pre></li>
+		<li><pre>$c->controller() - use base 'Catalyst::Controller';</pre></li>
 		<li>elegant way to have a tool organized</li>
 	</ul>
 </div>
@@ -77,6 +82,159 @@
 		<li>view is called to render the page</li>
 	</ol>
 -->
+</div>
+
+
+<div class="slide">
+	<h1>What is a $c->view()?</h1>
+	<pre class='sh_perl'>
+package ViennaPM1::View::Dump;
+use base 'Catalyst::View';
+use File::Slurp;
+sub render {
+    my ($self, $c, $dump_name) = @_;
+    $dump_name = $c->config->{'View::Dump'}->{'path'}.'/'.$dump_name;
+    return read_file($c->path_to($dump_name).'');
+}
+sub process {
+    my ($self, $c) = @_;
+    $c->response->content_type('text/plain');
+    $c->response->body(
+        $self->render($c, $c->stash->{'template'})
+    );
+    return 1;
+}
+1;
+	</pre>
+</div>
+
+
+<div class="slide">
+	<h1>What is a $c->model()?</h1>
+	<pre class='sh_perl'>
+package ViennaPM1::Model::Constants;
+use base 'Catalyst::Model';
+my %constants = ( 'p' => 'perl', 'm' => 'mongers' );
+sub named {
+    my ($self, $name) = @_;
+    die 'no such constatnt' if not exists $constants{$name}; 
+    return $constants{$name};
+}
+sub names {
+    return join ', ', keys %constants;
+}
+1;
+	</pre>
+</div>
+
+<div class="slide">
+	<h1>What is a $c->controller()?</h1>
+	<pre class='sh_perl'>
+package ViennaPM1::Controller::Root;
+use base 'Catalyst::Controller';
+__PACKAGE__->config->{'namespace'} = '';
+sub index : Private {
+    my ( $self, $c ) = @_;
+    $c->stash->{'message'} =
+        $c->model('Constants')->names.', generated at: '.$c->time_now;
+    $c->stash->{'template'} = 'index.tt2';
+    # default view is called to handle the template
+}
+sub dump : Local {
+    my ( $self, $c, $name ) = @_;
+    $c->stash->{'template'} = $name;
+    $c->forward('View::Dump');
+}
+1;
+	</pre>
+</div>
+
+<div class="slide">
+	<h1>more $c methods</h1>
+
+	<h2>buildin</h2>
+	<ul>
+		<li>$c->config->{} - hash ref of configuration variables</li>
+		<li>$c->stash->{} - hash ref of temporary (per request) variables</li>
+		<li>$c->uri_for('/') - get http url for catalyst uri</li>
+		<li>$c->log->debug - loggin function</li>
+		<li>...</li>
+	</ul>
+	
+	<h2>others comes from pluggins</h2>
+	<ul>
+		<li>$c->session - hash of session variables<br/>
+		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::Session'>Catalyst::Plugin::Session</a></li>
+		<li>$c->authenticate<br/>
+		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::Authentication'>Catalyst::Plugin::Authentication</a></li>
+		<li>$c->require_ssl<br/>
+		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::RequireSSL'>Catalyst::Plugin::RequireSSL</a></li>
+		<li>and much more...<br/>
+		see <a href='http://search.cpan.org/perldoc?Catalyst::Manual::Plugins'>Catalyst::Manual::Plugins</a></li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>So what is the plugin after all?</h1>
+	<ul>
+	<li>plugin can execute stuff at setup time</li>
+	<li>plugin can add methods to the $c</li>
+	<li>and this is why everything in Catalyst is $c</li>
+	<li>let's have an example</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>Plugin</h1>
+	<pre class='sh_perl'>
+package Catalyst::Plugin::TimeNow;
+use POSIX 'strftime';
+sub setup {
+    my $c     = shift;
+    $c->log->debug('Now we have: '.time_now($c));
+    $c->NEXT::setup( @_ );
+}
+sub time_now {
+    my $c   = shift;
+    my $time_format = $c->config->{'TimeNow'}->{'format'} || '%a %b %e %H:%M:%S %Y';
+    return strftime $time_format, localtime;
+}
+1;
+	</pre>
+</div>
+
+
+<div class="slide">
+	<h1>the Glue</h1>
+	<pre class='sh_perl'>
+package ViennaPM1;
+use Catalyst::Runtime '5.70';
+my @plugins;
+BEGIN {
+    push(@plugins, '-Debug') if $ENV{'IN_DEBUG_MODE'};
+    push(@plugins, qw(
+        ConfigLoader
+        DefaultEnd	
+        Static::Simple
+        TimeNow
+    ));
+}
+use Catalyst @plugins;
+__PACKAGE__->setup;
+1;
+	</pre>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1>Finally</h1>
+	<h2>to display our pages</h2>
+	<ul>
+		<li><a href='http://localhost:3000'>dedicated http server</a></li>
+		<li>cgi/fast cgi</li>
+		<li>mod_perl</li>
+	</ul>
+
 </div>
 
 

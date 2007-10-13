@@ -1,0 +1,7 @@
+<div id="header"><hr/></div>
+
+<div id="content">
+[% content %]
+</div>
+
+<div id="footer"><hr/></div>

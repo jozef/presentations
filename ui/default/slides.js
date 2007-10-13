@@ -548,6 +548,7 @@ function startup() {
 		document.onclick = clicker;
 	}
 	initCounter();
+	sh_highlightDocument();
 }
 
 window.onload = startup;

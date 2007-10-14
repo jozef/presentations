@@ -12,8 +12,8 @@
 <meta name="company" content="Soiton, a.s." />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <!-- configuration parameters -->
-<!-- <meta name="defaultView" content="slideshow" /> -->
-<meta name="defaultView" content="outline" />
+<meta name="defaultView" content="slideshow" />
+<!-- <meta name="defaultView" content="outline" /> -->
 <meta name="controlVis" content="hidden" />
 <!-- style sheet links -->
 <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
@@ -28,7 +28,7 @@
 <script type="text/javascript" src="ui/sh/sh_perl.js"></script>
 
 </head>
-<body>
+<body><!--  onload='sh_highlightDocument();' -->
 
 <div class="layout">
 <div id="controls"><!-- DO NOT EDIT --></div>
@@ -164,6 +164,7 @@ sub dump : Local {
 	<h2>others comes from pluggins</h2>
 	<ul>
 		<li>$c->session - hash of session variables<br/>
+		$c->flash - hash of temporary session variables<br/>
 		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::Session'>Catalyst::Plugin::Session</a></li>
 		<li>$c->authenticate<br/>
 		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::Authentication'>Catalyst::Plugin::Authentication</a></li>
@@ -227,6 +228,16 @@ __PACKAGE__->setup;
 </div>
 
 <div class="slide">
+	<h1>Catalyst folder tree</h1>
+	<p style="text-align: center;"><img src="catalyst-tricks/catalyst-folder-tree.png" alt="" title=""></p>
+</div>
+
+<div class="slide">
+	<h1>Catalyst customized folder tree</h1>
+	<p style="text-align: center;"><img src="catalyst-tricks/catalyst-folder-tree2.png" alt="" title=""></p>
+</div>
+
+<div class="slide">
 	<h1>Finally</h1>
 	<h2>to display our pages</h2>
 	<ul>
@@ -234,35 +245,165 @@ __PACKAGE__->setup;
 		<li>cgi/fast cgi</li>
 		<li>mod_perl</li>
 	</ul>
-
 </div>
+
+
+<div class="slide">
+	<h1>DBIx::Class</h1>
+	<ul>
+		<li>Do you use it? "it" => ORM</li>
+		<li>$c->model('DBIC::User')->find()<br />
+		$schema->resultset('user')->find()
+		</li>
+		<li><b>Metaprogramming</b> is the writing of computer programs
+		that write or manipulate other programs (or themselves) as their
+		data or that do part of the work during compile time that is otherwise
+		done at run time. In many cases, this allows programmers to get more
+		done in the same amount of time as they would take to write all the
+		code manually. (<a href='http://en.wikipedia.org/wiki/Meta_programming'>Wikipedia</a>)
+		</li>
+		<li>YAPC 2007 Yuval Kogman (‎nothingmuch‎) - Object Meta Programming</li>
+		<li>DBIx::Class, Moose, Class::Accessor, ...</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>DBIx::Class example</h1>
+	<pre class='sh_perl'>
+package ViennaPM1::DBIC::Monger;
+use base 'DBIx::Class';
+
+__PACKAGE__->load_components(qw{PK::Auto ResultSetManager Core});
+__PACKAGE__->table('mongers');
+__PACKAGE__->add_columns(qw{
+    monger_id
+    name
+    cpan_id
+    status
+    life_style_id
+});
+__PACKAGE__->set_primary_key('monger_id');
+__PACKAGE__->sequence('mongers_monger_id_seq');
+
+__PACKAGE__->might_have( 'personal_life' => 'ViennaPM1::PersonalLife', 'monger_id');
+__PACKAGE__->has_many  ( 'presentations' => 'ViennaPM1::Presentation', 'monger_id');
+__PACKAGE__->belongs_to( 'life_style'    => 'ViennaPM1::LifeStyle',    'life_style_id');
+
+__PACKAGE__->add_unique_constraint(
+    uniq_cpan_id => [ qw{cpan_id} ]
+);
+
+    # AND CONTINUES ...
+	</pre>
+</div>
+
+<div class="slide">
+	<h1>DBIx::Class example</h1>
+	<pre class='sh_perl'>
+sub with_cpan_id : ResultSet {
+    my ($self, $cpan_id) = @_;
+    return = $self->find({
+        cpan_id => $cpan_id
+    }, { key  => 'uniq_cpan_id'});
+}
+sub promote_to_guru {
+    my $self = shift;	
+    $self->status('GURU');
+    $self->update;
+}
+sub is_active {
+    my $self = shift;	
+    return 1 if $self->status ne 'DISABLED';
+    return 0;
+}
+1;
+	</pre>
+</div>
+
+<div class="slide">
+	<h1>What's so great?</h1>
+	<h2>For each table</h2>
+	<ul>
+		<li>we have an object for every row in the table<br/>
+			<pre class='sh_perl'>my $monger = $c->model('DBIC::Monger')->with_cpan_id('domm');</pre>
+		</li>
+		<li>relations between tables are easily and clearly defined<br/>
+			<pre class='sh_perl'>print $monger->life_style->name;</pre>
+		</li>
+		<li>common select cases predefined</li>
+		<li>common checks/modifications predefined<br/>
+			<pre class='sh_perl'>$monger->promote_to_guru;</pre>
+			<pre class='sh_perl'>$monger->delete if not $monger->is_active;</pre>
+		</li>
+		<li>and everythink can be commented in a <a href='catalyst-tricks/examples/ViennaPM1/tmp/Monger.pod.html'>pod</a></li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>Let's go even further away from Catalyst</h1>
+	<h2>pull the trigger, feel the click,<br/>
+	no further danger</h2>
+	<ul>
+		<li>foreign references
+			<pre class='sh_perl'>$c->model('DBIC::Monger')->with_cpan_id('domm')->delete;</pre>
+			will remove also records of his life style and personal life! :)
+		</li>
+		<li>pl/SQL is not that complex</li>
+		<li>pl/Perl in extreme cases (thank you PostgreSQL)</li>
+		<li>this will keep job of checking data integrity
+		inside the database,
+		no matter who or how will access it<br/></li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>Little summary</h1>
+	<h2>what we have:</h2>
+	<ul>
+		<li>data integrity guarded by database</li>
+		<li>data manipulation using well defined objects</li>
+		<li>url dispatch, control, data preparing by $c->controller</li>
+		<li>response contructed by $c->view<br/>
+		some templating system (Template Toolkit?)
+		</li>
+	</ul>
+	<h2>we have the application/tool design before we even started :)</h2>
+</div>
+
+<div class="slide">
+	<h1>Time for some real tricks</h1>
+	<p style="text-align: center;"><img src="catalyst-tricks/real_tricks.jpg" alt="" title=":)"></p>
+</div>
+
+
+
 
 
 <div class="slide">
 	<h1>Replace 'please come back later'</h1>
 	<ul>
-		<li>in debug mode the error "output" is fine, but please come back later ;)</li>
+		<li>in debug mode the error <a href='http://localhost:3000/dump/123'>"output"</a> is fine, but <a href='http://localhost:3001/dump/123'>please come back later</a> ;)</li>
 		<li>the trick is to have $c->finalize_error</li>
-		<li>sub finalize_error {} in the MyApp.pm</li>
+		<li>sub finalize_error {} in the ViennaPM1.pm</li>
 		<li>plugin that inherits finalize_error function</li>
-		<li><a href='http://search.cpan.org/perldoc?Catalyst::Plugin::CustomErrorMessage'>Catalyst::Plugin::CustomErrorMessage</a></li>
 	</ul>
 </div>
 
 <div class="slide">
 	<h1>two types of errors</h1>
 	<ul>
-		<li>what we want is to have our nice header.tt + footer.tt + site.css look also for errors</li>
+		<li>what we want is to have our template header.tt + footer.tt + site.css look also for errors</li>
 		<li>with code/syntax errors we can call $c->view('TT')->render( ... </li>
 		<li>for unhadled actions like wrong url we can do<br/>
 		$c->response->redirect($c->uri_for('/'))<br/>
-		havving flash variable set</li>
+		having flash variable set</li>
+		<li><a href='http://search.cpan.org/perldoc?Catalyst::Plugin::CustomErrorMessage'>Catalyst::Plugin::CustomErrorMessage</a></li>
 	</ul>
 </div>
 
 <div class="slide">
 	<h1>$c for scripts</h1>
-	<h2>access to $c->controlle()</h2>
+	<h2>access to $c->controller()</h2>
 	<ul>
 		<li>we what write
 		script that will notify users about their account
@@ -282,22 +423,82 @@ __PACKAGE__->setup;
 	<h1>$c for scripts</h1>
 	<h2>example</h2>
 	<ul>
-		<li>$c->controller('Email')->send({}) for sending emails</li>
+		<li>$c->controller('Email')->send($c, {}) for sending emails</li>
 		<li>it will use $c->view('EmailTT') to construct the html email body</li>
 		<li>we can use it for both web part and the script part</li>
 		<li>it will use the same code</li>
 	</ul>
+	<h2>how?</h2>
+	<ul>
+		<li>with a plugin :)</li>
+		<li><a href='http://search.cpan.org/perldoc?Catalyst::Plugin::CommandLine'>Catalyst::Plugin::CommandLine</a></li>
+		<li>cca 4 lines of code :)</li>
+	</ul>
 </div>
 
-<!--
 <div class="slide">
-<h1>1st day</h1>
-<p style="text-align: center;">
-<img src="yapc2007/P1000163.JPG" alt="" title="My">
-</p>
+	<h1>authentication with Client Certificates</h1>
+	<h2>Why?</h2>
+	<ul>
+		<li>because i HATE passwords :)</li>
+		<li>no (stupid?) questions needed</li>
+		<li>more secure than passwords</li>
+	</ul>
+	<h2>Why not?</h2>
+	<ul>
+		<li>there is no OCSP for standard apache<br/>
+		(Online Certificate Status Protocol)</li>
+		<li>there is no OCSP in CPAN (!!!) neither</li>
+	</ul>
 </div>
--->
 
+<div class="slide">
+	<h1>authentication with Client Certificates</h1>
+	<h2>httpd.conf</h2>
+	<pre>
+SSLCertificateKeyFile /.../ssl/Server.key
+SSLCACertificateFile  /.../ssl/SomeCertificationAuthority.crt
+SSLCARevocationFile   /.../ssl/LatestCRL.pem.crl
+&lt;Location /login&gt;
+    SSLVerifyClient optional
+    SSLVerifyDepth 1
+    SSLOptions +StdEnvVars
+#   PerlOptions +SetupEnv
+&lt;/Location&gt;</pre>
+	<p>with "+SetupEnv" catalyst is confused</p>
+</div>
+
+<div class="slide">
+	<h1>authentication with Client Certificates</h1>
+	<h2>$c->controller('Root')->login()</h2>
+	<pre class='sh_perl'>
+# need this "hack" to populate env with SSL
+# could be done with "PerlOptions +SetupEnv" httpd.conf option but
+# that will confuse catalyst and $c->uri_for() will not work properly
+$c->apache->subprocess_env if can $c, 'apache';
+if ((exists $ENV{'SSL_CLIENT_VERIFY'}) and ($ENV{'SSL_CLIENT_VERIFY'} eq 'SUCCESS')) {
+    $c->stash->{'cert_email'} = $ENV{'SSL_CLIENT_S_DN_Email'};
+    $c->stash->{'cert_name'}  = $ENV{'SSL_CLIENT_S_DN_CN'};
+    my $autologin_user = $c->default_auth_store->get_user($c->stash->{'cert_email'});
+    $c->set_authenticated($autologin_user) if ($autologin_user);
+}
+	</pre>
+</div>
+
+<div class="slide">
+	<h1>Catalyst session bug in Debian Etch</h1>
+	<ul>
+		<li>if there are no data in the $c->session hash ref<br/>
+		the next time you load a page the session expires</li>
+		<li>so there is change 1:2 that you will loose the<br/>
+		next session data as they are written to expired session</li>
+		<li>workaround is to always set something to $c->session</li>
+		<li>in $c->controller('root')->auto()</li>
+		<li>
+<pre class='sh_perl'>#workaround for buggy Catalyst::Plugin::Session that expires session cookie once it has no data
+$c-&gt;session-&gt;{'Catalyst::Plugin::Session'} = 'bug';</pre></li>
+	</ul>
+</div>
 
 
 <div class="slide">

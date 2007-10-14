@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<TITLE>ViennaPM1::DBIC::Monger</TITLE>
+		<link rel="stylesheet" href="http://hp-cpan.tools.emea.hp.com/css/perldoc.css" type="text/css">
+		<link rel="stylesheet" href="http://hp-cpan.tools.emea.hp.com//css/hp-cpan.css" type="text/css">
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><UL>
+<LI><A HREF="#table">table
+
+</A><LI><A HREF="#columns">columns
+
+</A><LI><A HREF="#relationships">relationships
+
+</A><LI><A HREF="#unique%20constraints">unique constraints
+
+</A></UL>
+<LI><A HREF="#RESULTSETS">RESULTSETS
+
+</A><UL>
+<LI><A HREF="#with_cpan_id(%24cpan_id)%20%3a%20ResultSet">with_cpan_id($cpan_id) : ResultSet
+
+</A></UL>
+<LI><A HREF="#METHODS">METHODS
+
+</A><UL>
+<LI><A HREF="#status()">status()
+
+</A><LI><A HREF="#is_active()">is_active()
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>ViennaPM1::DBIC::Monger - DBIx:Class module representing Vienna Perl Monger
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>DBIx::Class representation of the Monger table.
+
+</P><H2><A NAME="table">table
+
+</A></H2>
+
+<PRE>	mongers</PRE>
+<H2><A NAME="columns">columns
+
+</A></H2>
+
+<PRE>	monger_id - PK
+	name
+	cpan_id
+	status</PRE>
+<H2><A NAME="relationships">relationships
+
+</A></H2>
+
+<PRE>	__PACKAGE__-&gt;might_have( 'personal_life' =&gt; 'ViennaPM1::PersonalLife', 'monger_id');
+	__PACKAGE__-&gt;has_many  ( 'presentations' =&gt; 'ViennaPM1::Presentation', 'monger_id');
+	__PACKAGE__-&gt;belongs_to( 'life_style'    =&gt; 'ViennaPM1::LifeStyle',    'life_style_id');</PRE>
+<H2><A NAME="unique%20constraints">unique constraints
+
+</A></H2>
+
+<PRE>	uniq_cpan_id =&gt; [ qw{cpan_id} ]</PRE>
+<H1><A NAME="RESULTSETS">RESULTSETS
+
+</A></H1>
+<H2><A NAME="with_cpan_id(%24cpan_id)%20%3a%20ResultSet">with_cpan_id($cpan_id) : ResultSet
+
+</A></H2>
+
+<P>Returns monger whose cpan id equals to $cpan_id
+
+</P><H1><A NAME="METHODS">METHODS
+
+</A></H1>
+<H2><A NAME="status()">status()
+
+</A></H2>
+
+<P>Set or get current monger status.
+
+</P><H2><A NAME="is_active()">is_active()
+
+</A></H2>
+
+<P>Returns false if the monger is disabled otherwise true.
+
+</P>
+</BODY>
+</HTML>

@@ -26,6 +26,7 @@
 <link rel="stylesheet" type="text/css" href="ui/sh/sh_style.css" />
 <script type="text/javascript" src="ui/sh/sh_main.js"></script>
 <script type="text/javascript" src="ui/sh/sh_perl.js"></script>
+<script type="text/javascript" src="ui/sh/sh_sql.js"></script>
 
 </head>
 <body><!--  onload='sh_highlightDocument();' -->
@@ -500,7 +501,7 @@ $c-&gt;session-&gt;{'Catalyst::Plugin::Session'} = 'bug';</pre></li>
 	</ul>
 </div>
 
-<div class="slide">
+<div class="slide" style="background: url('catalyst-tricks/nuke.jpg') right top no-repeat;">
 	<h1>Temporary down</h1>
 	<h2>httpd.conf</h2>
 <pre>
@@ -518,6 +519,178 @@ $c-&gt;session-&gt;{'Catalyst::Plugin::Session'} = 'bug';</pre></li>
 	
 #	RedirectMatch "^/(?!static/)" /static/temp-down-for-maintenance.html
 </pre>
+</div>
+
+
+<div class="slide" style="background: url('catalyst-tricks/post_box.jpg') right top no-repeat;">
+	<h1>$c->controller('Email')</h1>
+	<h2>methods</h2>
+	<ul>
+		<li>sub list : Local {<br/>
+		table with "Send Time, <i>Created by</i>, To, Cc, Bcc, Subject"</li>
+		<li>sub show : Local {<br/>
+		show's the exact email
+		</li>
+		<li>sub show_template : Local {<br/>
+		show's email template</li>
+		<li>sub send : Private {<br/>
+		private method to send email</li>
+		<li>sub resend : Local {<br/>
+		send previous email again</li>
+	</ul>
+</div>
+
+
+<div class="slide" style="background: url('catalyst-tricks/evolution1.png') right top no-repeat;">
+	<h1>automated db history</h1>
+	<h2>session_info table</h2>
+<pre class='sh_perl'>
+__PACKAGE__->config(
+    schema_class => 'HP_Infrasec::DBIx',
+    connect_info => [
+        $config->{'db'}->{'dbi_dsn'},
+        $config->{'db'}->{'username'},
+        $config->{'db'}->{'password'},
+        {
+            AutoCommit    => 1,
+            on_connect_do => [
+                'CREATE TEMPORARY TABLE session_info (modified_by text, session_id text);',
+                "INSERT INTO session_info (modified_by, session_id) VALUES ('".basename($0)."', '".$PID."');",
+            ],
+        },
+    ],
+);</pre>
+</div>
+
+<div class="slide" style="background: url('catalyst-tricks/evolution2.png') right top no-repeat;">
+	<h1>automated db history</h1>
+	<h2>$c->controller('Root')->auto</h2>
+<pre class='sh_perl'>
+if ($c->user_exists) {
+    $c->model('DBIC::Session_Info')->modified_by($c->session->{'person'}->{'employeeNumber'});
+}
+else {
+    $c->model('DBIC::Session_Info')->modified_by(undef);
+}
+$c->model('DBIC::Session_Info')->session_id($c->sessionid);
+</pre>
+</div>
+
+<div class="slide" style="background: url('catalyst-tricks/evolution3.png') right top no-repeat;">
+	<h1>automated db history</h1>
+<pre class='sh_sql'>
+CREATE OR REPLACE FUNCTION history_emails_trigger() RETURNS TRIGGER AS $$
+DECLARE
+    v_modified_by history_emails.created_by%TYPE;
+BEGIN
+    SELECT modified_by
+    INTO v_modified_by
+    FROM session_info;
+    
+    new.created_by := v_modified_by;
+    RETURN new;
+END;
+$$ LANGUAGE plpgsql;
+</pre>
+</div>
+
+<div class="slide" style="background: url('catalyst-tricks/evolution4.png') right top no-repeat;">
+	<h1>automated db history</h1>
+	<h2>column changes history</h2>
+<pre class='sh_sql'>
+CREATE TABLE history (
+    history_id              SERIAL,
+    session_id              VARCHAR NOT NULL,
+    modified_by             VARCHAR,
+    table_name              VARCHAR NOT NULL,
+    event                   VARCHAR NOT NULL,
+    event_timestamp         TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    comment                 VARCHAR NULL,
+    old_values              VARCHAR NULL,
+    new_values              VARCHAR NULL,    
+    CHECK (event in ('INSERT', 'UPDATE', 'DELETE')),
+    CHECK (old_values IS NOT NULL OR new_values IS NOT NULL),
+    PRIMARY KEY (history_id)
+);
+</pre>
+</div>
+
+<div class="slide" style="background: url('catalyst-tricks/evolution5.png') right top no-repeat;">
+	<h1>automated db history</h1>
+	<h2>column changes history</h2>
+<pre class='sh_perl'>
+CREATE OR REPLACE FUNCTION history_trigger() RETURNS TRIGGER AS $$
+	#global variables
+	my $table_name      = $_TD->{'relname'};
+	my $event           = $_TD->{'event'};
+#	elog(NOTICE, $event.' '.$table_name);
+	my $session_info_query = spi_query(qq{
+		SELECT session_id, modified_by
+		FROM session_info;
+	});	
+	my $session_info = spi_fetchrow($session_info_query);
+	elog(ERROR, "history_trigger: No session info row") if not defined $session_info;
+	my $session_id  = (defined $session_info->{'session_id'}  ? "'".$session_info->{'session_id'}."'"  : 'NULL');
+	my $modified_by = (defined $session_info->{'modified_by'} ? "'".$session_info->{'modified_by'}."'" : 'NULL');
+</pre>
+</div>
+
+<div class="slide" style="background: url('catalyst-tricks/evolution6.png') right top no-repeat;">
+	<h1>automated db history</h1>
+	<h2>what we have</h2>
+	<ul>
+		<li>%{$_TD->{'new'}}</li>
+		<li>%{$_TD->{'old'}}</li>
+		<li>$_TD->{'event'}</li>
+	</ul>
+	<h2>we can generate</h2>
+	<ul>
+		<li>$comment</li>
+		<li>$old_values</li>
+		<li>$new_values</li>
+	</ul>
+</div>
+
+
+<div class="slide" style="background: url('catalyst-tricks/evolution7.png') right top no-repeat;">
+	<h1>automated db history</h1>
+	<h2>column changes history</h2>
+<pre class='sh_perl'>
+	my $history_insert = spi_exec_query(qq{
+		INSERT INTO history (
+			session_id,
+			modified_by,
+			table_name,
+			event,
+			comment,
+			old_values,
+			new_values
+		)
+		VALUES (
+			$session_id,
+			$modified_by,
+			'$table_name',
+			'$event',
+			$comment,
+			$old_values,
+			$new_values
+		)
+	});
+</pre>
+</div>
+
+<div class="slide" style="background: url('catalyst-tricks/evolution.png') right top no-repeat;">
+	<h1>automated db history</h1>
+	<h2>benefits from history</h2>
+	<ul>
+		<li>we can show comments to users as history changes</li>
+		<li>we know who/what changed what</li>
+		<li>for paranoiacs owner of the triggers and tables can be<br/>
+		different than the application user so nobody will be able<br/>
+		to change thinks withou a "trace"</li>
+		<li>in case of a disaster we can recover from changes from<br/>
+		single source.</li>
+	</ul>
 </div>
 
 <div class="slide">

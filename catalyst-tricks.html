@@ -542,7 +542,7 @@ $c-&gt;session-&gt;{'Catalyst::Plugin::Session'} = 'bug';</pre></li>
 
 
 <div class="slide" style="background: url('catalyst-tricks/evolution1.png') right top no-repeat;">
-	<h1>automated db history</h1>
+	<h1>db history</h1>
 	<h2>session_info table</h2>
 <pre class='sh_perl'>
 __PACKAGE__->config(
@@ -563,7 +563,7 @@ __PACKAGE__->config(
 </div>
 
 <div class="slide" style="background: url('catalyst-tricks/evolution2.png') right top no-repeat;">
-	<h1>automated db history</h1>
+	<h1>session_info up-to-date</h1>
 	<h2>$c->controller('Root')->auto</h2>
 <pre class='sh_perl'>
 if ($c->user_exists) {
@@ -577,7 +577,7 @@ $c->model('DBIC::Session_Info')->session_id($c->sessionid);
 </div>
 
 <div class="slide" style="background: url('catalyst-tricks/evolution3.png') right top no-repeat;">
-	<h1>automated db history</h1>
+	<h1>history_emails_trigger()</h1>
 <pre class='sh_sql'>
 CREATE OR REPLACE FUNCTION history_emails_trigger() RETURNS TRIGGER AS $$
 DECLARE
@@ -595,7 +595,7 @@ $$ LANGUAGE plpgsql;
 </div>
 
 <div class="slide" style="background: url('catalyst-tricks/evolution4.png') right top no-repeat;">
-	<h1>automated db history</h1>
+	<h1>CREATE TABLE history</h1>
 	<h2>column changes history</h2>
 <pre class='sh_sql'>
 CREATE TABLE history (
@@ -616,8 +616,8 @@ CREATE TABLE history (
 </div>
 
 <div class="slide" style="background: url('catalyst-tricks/evolution5.png') right top no-repeat;">
-	<h1>automated db history</h1>
-	<h2>column changes history</h2>
+	<h1>history_trigger()</h1>
+	<h2>AFTER INSERT OR UPDATE ON<br/>BEFORE DELETE ON</h2>
 <pre class='sh_perl'>
 CREATE OR REPLACE FUNCTION history_trigger() RETURNS TRIGGER AS $$
 	#global variables
@@ -636,7 +636,7 @@ CREATE OR REPLACE FUNCTION history_trigger() RETURNS TRIGGER AS $$
 </div>
 
 <div class="slide" style="background: url('catalyst-tricks/evolution6.png') right top no-repeat;">
-	<h1>automated db history</h1>
+	<h1>history_trigger() purpouse</h1>
 	<h2>what we have</h2>
 	<ul>
 		<li>%{$_TD->{'new'}}</li>
@@ -653,8 +653,7 @@ CREATE OR REPLACE FUNCTION history_trigger() RETURNS TRIGGER AS $$
 
 
 <div class="slide" style="background: url('catalyst-tricks/evolution7.png') right top no-repeat;">
-	<h1>automated db history</h1>
-	<h2>column changes history</h2>
+	<h1>spi_exec_query()</h1>
 <pre class='sh_perl'>
 	my $history_insert = spi_exec_query(qq{
 		INSERT INTO history (
@@ -680,8 +679,7 @@ CREATE OR REPLACE FUNCTION history_trigger() RETURNS TRIGGER AS $$
 </div>
 
 <div class="slide" style="background: url('catalyst-tricks/evolution.png') right top no-repeat;">
-	<h1>automated db history</h1>
-	<h2>benefits from history</h2>
+	<h1>benefits from history</h1>
 	<ul>
 		<li>we can show comments to users as history changes</li>
 		<li>we know who/what changed what</li>

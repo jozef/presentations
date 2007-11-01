@@ -40,7 +40,7 @@
 <!-- added by Jozef :) -->
 <div id="counter" style="float: right; margin-right: 10px;">60</div> 
 
-<h1>05 Okt 2007</h1>
+<h1>05 Nov 2007</h1>
 <h2>Catalyst tricks</h2>
 
 </div>
@@ -86,6 +86,34 @@
 -->
 </div>
 
+<div class="slide">
+	<h1>$c methods</h1>
+
+	<h2>buildin</h2>
+	<ul>
+		<li>$c->config->{} - hash ref of configuration variables</li>
+		<li>$c->stash->{} - hash ref of temporary (per request) variables</li>
+		<li>$c->uri_for('/') - get http url for catalyst uri</li>
+		<li>$c->log->debug - loggin function</li>
+		<li>...</li>
+	</ul>	
+</div>	
+
+<div class="slide">
+	<h1>$c methods</h1>
+	<h2>others comes from plugins</h2>
+	<ul>
+		<li>$c->session - hash of session variables<br/>
+		$c->flash - hash of temporary session variables<br/>
+		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::Session'>Catalyst::Plugin::Session</a></li>
+		<li>$c->authenticate<br/>
+		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::Authentication'>Catalyst::Plugin::Authentication</a></li>
+		<li>$c->require_ssl<br/>
+		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::RequireSSL'>Catalyst::Plugin::RequireSSL</a></li>
+		<li>and much more...<br/>
+		see <a href='http://search.cpan.org/perldoc?Catalyst::Manual::Plugins'>Catalyst::Manual::Plugins</a></li>
+	</ul>
+</div>
 
 <div class="slide" style="background: url('catalyst-tricks/view.jpg') right top no-repeat;">
 	<h1>What is a $c->view()?</h1>
@@ -152,33 +180,7 @@ sub dump : Local {
 </div>
 
 <div class="slide">
-	<h1>more $c methods</h1>
-
-	<h2>buildin</h2>
-	<ul>
-		<li>$c->config->{} - hash ref of configuration variables</li>
-		<li>$c->stash->{} - hash ref of temporary (per request) variables</li>
-		<li>$c->uri_for('/') - get http url for catalyst uri</li>
-		<li>$c->log->debug - loggin function</li>
-		<li>...</li>
-	</ul>
-	
-	<h2>others comes from plugins</h2>
-	<ul>
-		<li>$c->session - hash of session variables<br/>
-		$c->flash - hash of temporary session variables<br/>
-		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::Session'>Catalyst::Plugin::Session</a></li>
-		<li>$c->authenticate<br/>
-		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::Authentication'>Catalyst::Plugin::Authentication</a></li>
-		<li>$c->require_ssl<br/>
-		<a href='http://search.cpan.org/perldoc?Catalyst::Plugin::RequireSSL'>Catalyst::Plugin::RequireSSL</a></li>
-		<li>and much more...<br/>
-		see <a href='http://search.cpan.org/perldoc?Catalyst::Manual::Plugins'>Catalyst::Manual::Plugins</a></li>
-	</ul>
-</div>
-
-<div class="slide">
-	<h1>So what is the plugin after all?</h1>
+	<h1>What is a plugin after all?</h1>
 	<ul>
 	<li>plugin can execute stuff at setup time</li>
 	<li>plugin can add methods to the $c</li>

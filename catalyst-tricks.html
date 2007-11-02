@@ -89,19 +89,19 @@
 <div class="slide">
 	<h1>$c methods</h1>
 
-	<h2>buildin</h2>
+	<h2>build-in</h2>
 	<ul>
 		<li>$c->config->{} - hash ref of configuration variables</li>
 		<li>$c->stash->{} - hash ref of temporary (per request) variables</li>
 		<li>$c->uri_for('/') - get http url for catalyst uri</li>
-		<li>$c->log->debug - loggin function</li>
+		<li>$c->log->debug - logging function</li>
 		<li>...</li>
 	</ul>	
 </div>	
 
 <div class="slide">
 	<h1>$c methods</h1>
-	<h2>others comes from plugins</h2>
+	<h2>others come from plugins</h2>
 	<ul>
 		<li>$c->session - hash of session variables<br/>
 		$c->flash - hash of temporary session variables<br/>
@@ -339,7 +339,7 @@ sub is_active {
 			<pre class='sh_perl'>$monger->promote_to_guru;</pre>
 			<pre class='sh_perl'>$monger->delete if not $monger->is_active;</pre>
 		</li>
-		<li>and everythink can be commented in a <a href='catalyst-tricks/examples/ViennaPM1/tmp/Monger.pod.html'>pod</a></li>
+		<li>and everything can be commented in a <a href='catalyst-tricks/examples/ViennaPM1/tmp/Monger.pod.html'>pod</a></li>
 	</ul>
 </div>
 
@@ -354,7 +354,7 @@ sub is_active {
 		</li>
 		<li>pl/SQL is not that complex</li>
 		<li>pl/Perl in extreme cases (thank you PostgreSQL)</li>
-		<li>this will keep job of checking data integrity
+		<li>this will keep the job of checking data integrity
 		inside the database,
 		no matter who or how will access it<br/></li>
 	</ul>
@@ -409,7 +409,7 @@ sub is_active {
 	<h1>$c for scripts</h1>
 	<h2>access to $c->controller()</h2>
 	<ul>
-		<li>we what write
+		<li>we want to write
 		script that will notify users about their account
 		expiration, some actions that they need to take,
 		or just start some daily data processing</li>
@@ -460,9 +460,9 @@ sub is_active {
 	<h1>authentication with Client Certificates</h1>
 	<h2>httpd.conf</h2>
 	<pre>
-SSLCertificateKeyFile /.../ssl/Server.key
-SSLCACertificateFile  /.../ssl/SomeCertificationAuthority.crt
-SSLCARevocationFile   /.../ssl/LatestCRL.pem.crl
+SSLCertificateKeyFile (...)/ssl/Server.key
+SSLCACertificateFile  (...)/ssl/SomeCertificationAuthority.crt
+SSLCARevocationFile   (...)/ssl/LatestCRL.pem.crl
 &lt;Location /login&gt;
     SSLVerifyClient optional
     SSLVerifyDepth 1
@@ -492,9 +492,9 @@ if ((exists $ENV{'SSL_CLIENT_VERIFY'}) and ($ENV{'SSL_CLIENT_VERIFY'} eq 'SUCCES
 <div class="slide" style="background: url('catalyst-tricks/debian.png') right top no-repeat;">
 	<h1>Catalyst session bug in Debian Etch</h1>
 	<ul>
-		<li>if there are no data in the $c->session hash ref<br/>
+		<li>if there is no data in the $c->session hash ref<br/>
 		the next time you load a page the session expires</li>
-		<li>so there is change 1:2 that you will loose the<br/>
+		<li>so there is chance 1:2 that you will loose the<br/>
 		next session data as they are written to expired session</li>
 		<li>workaround is to always set something to $c->session</li>
 		<li>in $c->controller('root')->auto()</li>
@@ -508,7 +508,7 @@ $c-&gt;session-&gt;{'Catalyst::Plugin::Session'} = 'bug';</pre></li>
 	<h1>Temporary down</h1>
 	<h2>httpd.conf</h2>
 <pre>
-	Alias /static .../root/static
+	Alias /static (...)/root/static
 	
 	
 	&lt;Location /&gt;

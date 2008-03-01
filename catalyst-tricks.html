@@ -479,10 +479,12 @@ SSLCARevocationFile   (...)/ssl/LatestCRL.pem.crl
 # could be done with "PerlOptions +SetupEnv" httpd.conf option but
 # that will confuse catalyst and $c->uri_for() will not work properly
 $c->apache->subprocess_env if can $c, 'apache';
-if ((exists $ENV{'SSL_CLIENT_VERIFY'}) and ($ENV{'SSL_CLIENT_VERIFY'} eq 'SUCCESS')) {
+if ((exists $ENV{'SSL_CLIENT_VERIFY'})
+		and ($ENV{'SSL_CLIENT_VERIFY'} eq 'SUCCESS')) {
     $c->stash->{'cert_email'} = $ENV{'SSL_CLIENT_S_DN_Email'};
     $c->stash->{'cert_name'}  = $ENV{'SSL_CLIENT_S_DN_CN'};
-    my $autologin_user = $c->default_auth_store->get_user($c->stash->{'cert_email'});
+    my $autologin_user =
+    	$c->default_auth_store->get_user($c->stash->{'cert_email'});
     $c->set_authenticated($autologin_user) if ($autologin_user);
 }
 	</pre>
@@ -548,7 +550,7 @@ $c-&gt;session-&gt;{'Catalyst::Plugin::Session'} = 'bug';</pre></li>
 	<h2>session_info table</h2>
 <pre class='sh_perl'>
 __PACKAGE__->config(
-    schema_class => 'HP_Infrasec::DBIx',
+    schema_class => 'ViennaPM1::DBIC',
     connect_info => [
         $config->{'db'}->{'dbi_dsn'},
         $config->{'db'}->{'username'},
@@ -632,8 +634,10 @@ CREATE OR REPLACE FUNCTION history_trigger() RETURNS TRIGGER AS $$
 	});	
 	my $session_info = spi_fetchrow($session_info_query);
 	elog(ERROR, "history_trigger: No session info row") if not defined $session_info;
-	my $session_id  = (defined $session_info->{'session_id'}  ? "'".$session_info->{'session_id'}."'"  : 'NULL');
-	my $modified_by = (defined $session_info->{'modified_by'} ? "'".$session_info->{'modified_by'}."'" : 'NULL');
+	my $session_id  = (defined $session_info->{'session_id'}  
+		? "'".$session_info->{'session_id'}."'"  : 'NULL');
+	my $modified_by = (defined $session_info->{'modified_by'} 
+		? "'".$session_info->{'modified_by'}."'" : 'NULL');
 </pre>
 </div>
 

@@ -545,7 +545,9 @@ function startup() {
 		}
 		document.onkeyup = keys;
 		document.onkeypress = trap;
-		document.onclick = clicker;
+		if (! document.getElementById('ignoreClicks')) {
+			document.onclick = clicker;
+		}
 	}
 	initCounter();
 	sh_highlightDocument();

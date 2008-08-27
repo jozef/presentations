@@ -58,11 +58,170 @@
 </div>
 
 <div class="slide">
-	<h1></h1>
-	<h2></h2>
+	<h1>Stefan Hornburg (‎racke‎) </h1>
+
+<!--
+	<div style="background-image: url('yapc-eu-2008/interchange.jpg'); background-repeat: no-repeat; background-position:center;">
+-->
+
+	<h2>Interchange - The Open Source Online Shop Platform</h2>
+	
 	<ul>
-		<li></li>
-		<li></li>
+		<li>released in 1995 => older architecture</li>
+		<li>build for more shops in one instalation</li>
+		<li>Business::UPS, Business::OnlinePayment</li>
+		<li>works in many production instalations</li>
+	</ul>	
+
+<!--
+	</div>
+-->
+
+</div>
+
+<div class="slide">
+	<h1>Jan Henning Thorsen</h1>
+	<h2>The web, HTML and all that stuff</h2>
+	<ul>
+		<li>DOCTYPE - IMPORTANT! At char 1, line 1</li>
+		<li>all styles and js atributes belong to external files</li>
+		<li>external js at the end of the document</li>
+		<li>test page with linx/links/w3m that is how search engines "see" it</li>
+		<li>"Frames? They don't exist, forget you ever heard of them!"</li>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1>Paul Johnson (‎pjcj‎)</h1>
+	<h2>Effective Code Coverage</h2>
+	<ul>
+		<li>cover -test</li>
+		<li>cover solaris_db other_db # join coverage from more machines</li>
+		<li>"# uncoverable subroutine" - to mark sub as "covered" in the report so that the red fields are not bothering over and over</li>
+		<li>.. and more # like uncoverable condition left, right, branch true, ...</li>
+		<li>reports: text, text2, html-basic, compilation, ... custom?</li>
+	</ul>	
+	<p style="text-align: center;"><img src="" alt="" title=""></p>
+</div>
+
+<div class="slide">
+	<h1>Chris BinGOs Williams</h1>
+	<h2>Rough Guide to CPAN Testing</h2>
+	<ul>
+		<li>send test reports while installing:</li>
+		<ul>
+			<li>CPAN + CPAN::Reporter<br/>cpan, install CPAN::Reporter, reload CPAN, o conf init test_report</li>
+			<li>CPANPLUS + Test::Reporter<br/>i YAML::Tiny, i Test::Reporter, s conf email xyz@whatever.org, s conf cpantest 1, s conf cpantest_mx smtp.somedomain.com, s conf verbose 1, s save</li>
+		</ul>
+		<li>$ENV{AUTOMATED_TESTING} is set during smoking</li>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1>Darko Obradovic</h1>
+	<h2>CoSAIR.org - Making of a Game AI Programming Platform</h2>
+	<ul>
+		<li>page where you can program and test AI in Perl</li>
+		<li>running malicious code using Safe.pm</li>
+		<li>uses "setitimer" to timeout only on cpu time spend by the process</li>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1></h1>
+	<h2>Amazon webService + Cloud ..</h2>
+	<ul>
+		<li>Amazon EC2 and S3 used a lot</li>
+		<li>easy way to get to storage/server</li>
+		<li>Net::Amazon::EC2</li>
+		<li>Catalyst::Model::S3</li>
+		<li>DBIx::Class::S3</li>
+	</ul>	
+	<p style="text-align: center;"><img src="" alt="" title=""></p>
+</div>
+
+<div class="slide">
+	<h1>Lars Jorgensen</h1>
+	<h2>Making (large) legacy systems beautiful</h2>
+	<ul>
+		<li>Work towards a complete mental model of the system - by testing, installing</li>
+		<li>Keep it simple - remove code</li>
+		<li>Break it early - remove code</li>
+		<li>Always move forward</li>
+		<li>Choose small targets</li>
+		<li>Don’t take it personal</li>
+	</ul>	
+	<p style="text-align: center;"><img src="" alt="" title=""></p>
+</div>
+
+<div class="slide">
+	<h1>Leo Lapworth (‎Ranguard‎)</h1>
+	<h2>Evolving Architecture - further</h2>
+	<ul>
+		<li>Apache::Size::limit</li>
+		<li>perlbal</li>
+		<li>mod_gzip</li>
+		<li>cache thinks for ever with versioning</li>
+		<li>MogileFS</li>
+		<li>manage systems using Puppet</li>
+		<li>monitor using Munin</li>
+		<li>distribute using TheSchwartz</li>
+		<li>use VMs (Xen) for testing constructing the whole system</li>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1>Jesse Vincent</h1>
+	<h2>Step 3: Prophet - A peer to peer replicated property database</h2>
+	<ul>
+		<li>Prophet is a new 'distributed database'</li>
+		<li>db with history like wiki</li>
+		<li>offline operation</li>
+		<li>REST API</li>
+		<li>sd - P2P bug tracker with foreigh replicas (RT, Trac)</li>
+		<li>http://syncwith.us/</li>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1>Michael Zedeler</h1>
+	<h2>Stream oriented processing with DSlib</h2>
+	<ul>
+		<li>Source -> Transformation -> Transformation -> Target</li>
+		<li>chained filter concept</li>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1>Edmund von der Burg</h1>
+	<h2>Modifying databases - changing the schema in a controlled way</h2>
+	<ul>
+		<li>Developers are not sys-admins</li>
+		<li>Add metadata to the schema<br/>create table __metadata (...);</li>
+		<li>Put schema changes in version control</li>
+		<li>Make it easy for sys-admins</li>
+		<li>__PACKAGE__->add_step( comment => "bla", do => "alter ...", rollback => "alter ...")</li>
+	</ul>	
+</div>
+
+
+<div class="slide">
+	<h1></h1>
+	<h2>.deb + .rpm</h2>
+	<ul>
+		<li>rpm</li>
+			<ul>
+				<li>Never mix CPAN-installed modules and package installed modules in the same Perl installation</li>
+				<li>cpanspec Calendar-Simple.1.20.tar.gz</li>
+				<li>rpmbuild -ba perl-Calendar-Simple.spec</li>
+				<li>rpm -Uvh perl-Calendar-Simple-1.20-1.fc9.noarch.rpm</li>
+			</ul>
+		<li>deb</li>
+			<ul>
+				<li>use pbuilder || cowbuilder</li>
+				<li>cpanp bas build in package creation capabilities</li>
+				<li>http://debian.pkgs.cpan.org/ - autogenerated debian repository from cpan</li>
+			</ul>
 	</ul>	
 </div>
 
@@ -74,6 +233,7 @@
 	<h2>Questions?</h2>
 	<p style="text-align: center;"><img src="catalyst-tricks/questions.jpg" alt="" title=""></p>
 </div>
+
 
 </div>
 

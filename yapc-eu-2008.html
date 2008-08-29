@@ -123,13 +123,15 @@
 	<ul>
 		<li>page where you can program and test AI in Perl</li>
 		<li>running malicious code using Safe.pm</li>
-		<li>uses "setitimer" to timeout only on cpu time spend by the process</li>
+		<li>use Time::HiRes qw(setitimer ITIMER_VIRTUAL);<br/>
+			timeout only on cpu time spend by the process</li>
+		<li>use Devel::Mallinfo qw(mallinfo);</li>
 	</ul>	
 </div>
 
 <div class="slide">
 	<h1></h1>
-	<h2>Amazon webService + Cloud ..</h2>
+	<h2>Amazon webService</h2>
 	<ul>
 		<li>Amazon EC2 and S3 used a lot</li>
 		<li>easy way to get to storage/server</li>
@@ -139,6 +141,36 @@
 	</ul>	
 	<p style="text-align: center;"><img src="" alt="" title=""></p>
 </div>
+
+<div class="slide">
+	<h1>Léon Brocard (‎acme‎)</h1>
+	<h2>Working in the cloud</h2>
+	<ul>
+		<li>DNS by Gandi</li>
+		<li>Email &amp; IM by Google</li>
+		<li>TODO by Hiveminder</li>
+		<li>Hosting, storage &amp; network by Amazon</li>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1>Erwan Lemonnier (‎R1‎)</h1>
+	<h2>Pragmatic Contract Programming in Perl</h2>
+	<ul><li>Sub::Contract</li></ul>
+	<pre>
+contract('add')
+    ->in( \&amp;is_integer,
+          \&amp;is_integer,
+          c => \&amp;is_integer )
+    ->enable;
+
+sub add {
+    my ($a,$b,%args) = @_;
+    return $a+$b+$args{c};
+}
+	</pre>
+</div>
+
 
 <div class="slide">
 	<h1>Lars Jorgensen</h1>

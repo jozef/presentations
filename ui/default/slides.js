@@ -116,6 +116,7 @@ function currentSlide() {
 	}
 }
 
+var showHideTime = 300;
 function go(step) {
 	if (document.getElementById('slideProj').disabled || step == 0) return;
 	var jl = document.getElementById('jumplist');
@@ -151,7 +152,9 @@ function go(step) {
 	}
 	if (incrementals[snum].length > 0 && incpos > 0)
 		addClass(incrementals[snum][incpos - 1], 'current');
-	ce.style.visibility = 'hidden';
+	$('#'+cid).fadeOut(showHideTime);
+	$('#'+nid).fadeIn(showHideTime);
+	// ce.style.visibility = 'hidden';
 	ne.style.visibility = 'visible';
 	jl.selectedIndex = snum;
 	currentSlide();

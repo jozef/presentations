@@ -6,6 +6,10 @@ $(document).ready(function(){
 			$(this).html('<h1 class="hidden">'+text+'</h1><table class="singleCellTable"><tr><td>'+text+'</td></tr></table>');
 		}
 	});
+	// replace div class sigleThink with single cell table
+	$(".singleThink").each(function () {
+		$(this).html('<table class="singleCellTable"><tr><td>'+$(this).text()+'</td></tr></table>');
+	});
 });
 
 

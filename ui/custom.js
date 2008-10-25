@@ -7,3 +7,25 @@ $(document).ready(function(){
 		}
 	});
 });
+
+
+// Counter
+var minutes = null;
+var counter = null;
+
+function initCounter() {
+	counter = document.getElementById('counter');
+
+	if (counter) {
+		minutes = counter.innerHTML;
+		displayCounter();
+	}
+}
+
+function displayCounter() {
+	if (minutes>0) {
+		minutes-=1;
+		counter.innerHTML=minutes; 
+		setTimeout("displayCounter()",1000*60);
+	}
+}

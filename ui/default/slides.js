@@ -113,10 +113,15 @@ function currentSlide() {
 		cs.style.visibility = 'hidden';
 	} else {
 		cs.style.visibility = 'visible';
+		
+		// start also time counter if not started jet
+		if (counter == null) {
+			initCounter();
+		}
 	}
 }
 
-var showHideTime = 300;
+var showHideTime = 250;
 function go(step) {
 	if (document.getElementById('slideProj').disabled || step == 0) return;
 	var jl = document.getElementById('jumplist');
@@ -218,7 +223,7 @@ function showHide(action) {
 			obj.style.visibility = 'hidden';
 		}
 	break;
-	}
+	}	
 }
 
 // 'keys' code adapted from MozPoint (http://mozpoint.mozdev.org/)
@@ -552,31 +557,8 @@ function startup() {
 			document.onclick = clicker;
 		}
 	}
-	initCounter();
 	sh_highlightDocument();
 }
 
 window.onload = startup;
 window.onresize = function(){setTimeout('fontScale()', 50);}
-
-// added by Jozef :)
-
-var minutes;
-var counter;
-
-function initCounter() {
-	counter = document.getElementById('counter');
-
-	if (counter) {
-		minutes = counter.innerHTML;
-		displayCounter();
-	}
-}
-
-function displayCounter() {
-	if (minutes>0) {
-		minutes-=1;
-		counter.innerHTML=minutes; 
-		setTimeout("displayCounter()",1000*60);
-	}
-}

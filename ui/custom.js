@@ -8,7 +8,7 @@ $(document).ready(function(){
 	});
 	// replace div class sigleThink with single cell table
 	$(".singleThink").each(function () {
-		$(this).html('<table class="singleCellTable"><tr><td>'+$(this).text()+'</td></tr></table>');
+		$(this).html('<table class="singleCellTable"><tr><td>'+$(this).html()+'</td></tr></table>');
 	});
 });
 

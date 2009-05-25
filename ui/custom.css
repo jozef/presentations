@@ -21,3 +21,12 @@
 .small {
 	font-size: 75%;
 }
+
+.slide pre {
+	width: 85%;
+	margin: 0 auto;
+}
+
+.red {
+	color: red;
+}

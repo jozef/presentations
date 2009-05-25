@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>File::is</title>
+<!-- metadata -->
+<meta name="version" content="S5 1.1" />
+<meta name="presdate" content="20081108" />
+<meta name="author" content="Jozef Kutej"/>
+<meta name="company" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<!-- <meta name="defaultView" content="outline" /> -->
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+<!-- S5 JS -->
+<script src="ui/default/slides.js" type="text/javascript"></script>
+<!-- syntax highlighting -->
+<link rel="stylesheet" type="text/css" href="ui/sh/sh_style.css" />
+<script type="text/javascript" src="ui/sh/sh_main.js"></script>
+<script type="text/javascript" src="ui/sh/sh_perl.js"></script>
+<script type="text/javascript" src="ui/sh/sh_sql.js"></script>
+<!-- custom -->
+<script src="ui/jquery-1.2.6.js" type="text/javascript"></script>
+<script src="ui/custom.js" type="text/javascript"></script>
+<link rel="stylesheet" href="ui/custom.css" type="text/css" />
+</head>
+
+<body><!--  onload='sh_highlightDocument();' -->
+
+<div class="layout">
+<div id="controls"><!-- DO NOT EDIT --></div>
+<div id="currentSlide"><!-- DO NOT EDIT --></div>
+<div id="header"></div>
+<div id="footer">
+
+<!-- added by Jozef :) -->
+<div id="counter" style="float: right; margin-right: 10px;">15</div>
+<span id="ignoreClicks" />
+
+<h1>26. May 2009</h1>
+<h2>File::is</h2>
+
+</div>
+
+</div>
+
+
+<div class="presentation">
+
+<div class="slide">
+	<h1>File::is</h1>
+	<h3>Jozef Kutej</h3>
+</div>
+
+<div class="slide">
+	<h1>older? oldest? is newer? newest? similar? the same?</h1>
+</div>
+
+<div class="slide">
+	<h1>if+stat</h1>
+	<p>it all started with:</p>
+	<pre>
+if (
+	(stat('filename'))[9]
+	&lt;
+	(stat('tmp/other-filename'))[9]
+) {
+	do_someting();
+};
+</pre>
+</div>
+
+<div class="slide">
+	<h1>instead</h1>
+	<ul>
+		<li>~80 lines of code</li>
+		<li>~90 lines of tests</li>
+	</ul>
+</div>
+
+
+<div class="slide">
+	<h1>if+stat problem1</h1>
+	<pre>
+if (
+	(stat('filename'))[<span class="red">9</span>]
+	&lt;
+	(stat('tmp/other-filename'))[<span class="red">9</span>]
+) {
+	do_someting();
+};
+</pre>
+	<ul>
+	    <li>what is (stat())[<span class="red">9</span>] ?</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>(stat())[9]</h1>
+	<pre>
+my $stat_dev     = 0;
+my $stat_ino     = 1;
+my $stat_mode    = 2;
+my $stat_nlink   = 3;
+my $stat_uid     = 4;
+my $stat_gid     = 5;
+my $stat_rdev    = 6;
+my $stat_size    = 7;
+my $stat_atime   = 8;
+my $stat_mtime   = <span class="red">9</span>;
+my $stat_ctime   = 10;
+my $stat_blksize = 11;
+my $stat_blocks  = 12;
+	</pre>
+</div>
+
+
+<div class="slide">
+	<h1>if+stat problem2</h1>
+	<pre>
+if (
+	(stat(<span class="red">'filename'</span>))[9]
+	&lt;
+	(stat(<span class="red">'tmp/other-filename'</span>))[9]
+) {
+	do_someting();
+};
+</pre>
+	<ul>
+	    <li>what happends if 'filename' doesn't exist?</li>
+	    <li>"tmp/other-filename" not too portable</li>
+	</ul>
+</div>
+
+
+<div class="slide">
+	<h1>if+File::is</h1>
+	<pre>
+if (
+	File::is->older(
+		'filename',
+		[ 'tmp', 'other-filename' ]
+	)
+) {
+	do_something();
+};</pre>
+<ul>
+    <li>readable code</li>
+    <li>die() on error</li>
+    <li>portable, uses File::Spec</li>
+    <li>accepts more files for camparition</li>
+</ul>
+
+</div>
+
+<div class="slide">
+	<h1>File::is methods</h1>
+	<ul>
+		<li>File::is->newer + File::is->newest</li>
+		<li>File::is->older + File::is->oldest</li>
+		<li>File::is->similar</li>
+		<li>File::is->thesame</li>
+		<li>File::is->bigger + File::is->biggest</li>
+		<li>File::is->smaller + File::is->smallest</li>
+	</ul>
+	<p>all reusing ONE universal internal function <code>_cmp_stat($class,
+	$return_value_if_match, $cmp_function, $primary_filename, $other_filename, $other_filename2, ...)
+	</code>
+	</p>
+</div>
+
+<div class="slide">
+	<h1>Questions?</h1>
+	<div class="singleThink"><img src="images/question-mark-blue-grey.jpg" alt=":-?" /></div>
+</div>
+
+</div>
+
+</body>
+</html>

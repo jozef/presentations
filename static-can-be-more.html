@@ -248,7 +248,7 @@ Include "./_tail.php";
 
 
 <div class="slide">
-    <h1>BA.pm.org</h1>
+    <h1>BA.pm.org<br/> <small>https://cle.sk/repos/pub/www/tt-pm/</small></h1>
 </div>
 
 <div class="slide">
@@ -266,7 +266,7 @@ Include "./_tail.php";
 </div>
 
 <div class="slide">
-    <h1>BA.pm.org features</h1>
+    <h1>BA.pm.org more features</h1>
     <ul>
 		<li>planet</li>
         <li>xhtml validations tests</li>
@@ -322,6 +322,72 @@ Include "./_tail.php";
 </div>
 
 <div class="slide">
+    <h1>redirect.tt2</h1>
+</div>
+
+<div class="slide">
+    <h1>events.xml + events-to-(html|rdf).xslt</h1>
+	<ul>
+		<li>events.xml + events-to-html.xslt =&gt; events.tt2</li>
+		<li>events.xml + events-to-rdf.xslt =&gt; news.rdf</li>
+	</ul>
+</div>
+
+<div class="slide">
+    <h1>who.xml + who-to-html.xslt + who-to-js.xslt</h1>
+	<ul>
+		<li>who.xml + who-to-html.xslt =&gt; who.tt2</li>
+		<li>who.xml + who-to-js.xslt =&gt; 06_mongers.js</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>i18n</h1>
+	<ul>
+		<li>.tt || .tt-en</li>
+		<li>[% IF lang %]</li>
+		<li>form with Locale::Maketext (+HTML::FormFu)<br/><small>(.yaml -&gt; .tt2)</small></li>
+		<li>JavaScript i18n</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>send-feedback.cgi</h1>
+	<ul>
+		<li>checks input</li>
+		<li>sends email</li>
+		<li>redirects to /cgi/email-(ok|fail).html</li>
+		<li>JavaScript i18n</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>nginx.conf<br/> TODO</h1>
+</div>
+
+
+<div class="slide">
+    <h1>SVN notify + deplay hooks</h1>
+	<ul>
+		<li>`meld html/`</li>
+		<li>`svn commit`</li>
+		<li>SVN::Notify</li>
+		<li>`svk up`</li>
+	</ul>
+</div>
+
+<div class="slide">
+    <h1>the rest</h1>
+	<ul>
+		<li>`vxml -v --ignore ...`</li>
+		<li>java -jar script/yuicompressor-2.4.2.jar</li>
+		<li>Amazon store (iframe)</li>
+		<li>`planet`</li>
+		<li>`svk up`</li>
+	</ul>
+</div>
+
+<div class="slide">
     <h1>Questions?</h1>
     <div class="singleThink"><img src="images/diving-signal-question.jpg" alt=":-?" /></div>
 </div>
@@ -331,7 +397,13 @@ Include "./_tail.php";
 </div>
 
 <div class="slide">
-    <h1>Thank you!</h1>
+    <h1>That's it</h1>
+    <h2>Thank you!</h2>
+	<ul>
+		<li>for good news use feedback of <a href="http://bratislava.pm.org/contact.html#feedback">ba.pm.org</a></li>
+		<li>any complains please send to <a href="mailto:devnull@ba.pm.org">devnull@ba.pm.org</a> ;-)</li>
+	</ul>
+	
 </div>
 
 

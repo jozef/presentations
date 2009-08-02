@@ -131,7 +131,7 @@
     <h1>Dynamic pages</h1>
     <ul>
         <li>dynamic => interactive experience</li>
-        <li>react on context/conditions/input</li>
+        <li>react to context/conditions/input</li>
         <li>server side</li>
         <li> or client side</li>
     </ul>
@@ -150,13 +150,13 @@
     <h1>Static Pages/Content</h1>
     <h2>advantages</h2>
     <ul>
-        <li>fast "processing" with web server</li>
-        <li>can be served by any web server (file://)</li>
+        <li>fast "processing" by web server</li>
+        <li>can be served by any web server (or even file://)</li>
         <li>nginx - 10000 inactive HTTP keep-alive connections take about 2.5M memory</li>
-        <li>100k request for .png (313kB) from 1000 clients<br/>
+        <li>100k requests for a .png (313kB) from 1000 clients
         <a href="http://superjared.com/entry/benching-lighttpd-vs-nginx-static-files/">in 12.5s</a> (8034.86 [#/sec])</li>
-        <li>it's cheap to feed users with static pages</li>
-        <li>can be server through CDN</li>
+        <li>it's cheap to serve users with static pages</li>
+        <li>can be served through a CDN</li>
     </ul>
 </div>
 
@@ -164,9 +164,9 @@
     <h1>Static pages</h1>
     <h2>disadvantages</h2>
     <ul>
-        <li>there has to be some tool to generate them otherwise it will be insane to try to keep the same look</li>
+        <li>there has to be some tool to generate them, otherwise it will be a nightmare to try to keep a consistent look and manage updates</li>
         <li>there is no "well known tool"</li>
-        <li>there is no "well known howto"</li>
+        <li>there is no "well known how-to"</li>
     </ul>   
 </div>
 
@@ -175,7 +175,7 @@
     <h2>advantages</h2>
     <ul>
         <li>that's the only way to get the credit card number</li>
-        <li>lot of books/tutorials/documentation</li>
+        <li>lots of books/tutorials/documentation</li>
         <li>my friend/coworker/everyone does it</li>
     </ul>
 </div>
@@ -184,15 +184,15 @@
     <h1>server side Scripting/Programming</h1>
     <h2>disadvantages</h2>
     <ul>
-        <li>cost CPU</li>
-        <li>cost RAM</li>
-        <li>mostly require specific web server (Apache HTTPD, IIS, Tomcat)</li>
+        <li>costs CPU</li>
+        <li>costs RAM</li>
+        <li>mostly requires a specific web server (Apache HTTPD, IIS, Tomcat)</li>
         <li>ASP, PHP, JSP, SSI, CGI, ...</li>
     </ul>
 </div>
 
 <div class="slide">
-    <h1>Lazyness</h1>
+    <h1>Laziness</h1>
     <pre>&lt;?
 Include "./_conf.php";
 Include "./_head.php";
@@ -213,7 +213,7 @@ Include "./_tail.php";
 </div>
 
 <div class="slide">
-	<h1>practical part</h1>
+	<h1>the practical part</h1>
 </div>
 
 
@@ -226,11 +226,11 @@ Include "./_tail.php";
 <div class="slide">
     <h1>BA.pm.org features</h1>
     <ul>
-        <li>one header+footer (unified look)</li>
+        <li>common header+footer (consistent look)</li>
         <li>menu with current selection highlighting</li>
-        <li>generated RSS feed and events page from one source XML</li>
-        <li>generated who-is-who page from XML</li>
-        <li>(meta+js) redirects /go/XYZ</li>
+        <li>RSS feed and events page generated from one XML source file</li>
+        <li>who-is-who page generated from an XML file</li>
+        <li>(meta+js) redirects (for example /go/YAPC)</li>
         <li>sk/en language versions</li>
         <li>generated feedback form (+hiveminder.com)</li>
         <li>book store</li>
@@ -241,25 +241,25 @@ Include "./_tail.php";
     <h1>BA.pm.org more features</h1>
     <ul>
         <li>planet</li>
-        <li>xhtml validations tests</li>
+        <li>xhtml validation tests</li>
         <li>internal links check</li>
         <li>can be hosted on anything, even file://<br/>
-        <small>(with an exception for send-feedback.cgi, google maps, planet, store)</small>
+        <small>(with the exception of send-feedback.cgi, planet, store)</small>
         </li>
         <li>auto deployment from SVN with commit diff emails</li>
         <li>2 stage development (dev+prod)<br/>
-        <small>(extensible to 3 stage if ever needed)</small>
+        <small>(extensible to 3 stage if it's ever needed)</small>
 		</li>
     </ul>   
 </div>
 
 <div class="slide">
     <h1>it's better to <a href="http://ba.pm.org/">see</a> once<br/>
-    then hear 100 times</h1>
+    then to hear 100 times</h1>
 </div>
 
 <div class="slide">
-	<h1>for curious</h1>
+	<h1>for the curious</h1>
 	<p style="text-align: center;"><img src="static-can-be-more/uniq-visitors.png" alt="visitors" title="visitors"></p>
 </div>
 
@@ -280,8 +280,8 @@ Include "./_tail.php";
     <h1>Template::Toolkit</h1>
     <ul>
         <li><a href="http://search.cpan.org/perldoc?Template">http://search.cpan.org/perldoc?Template</a></li>
-        <li>This templating module allows adding special marks into the text
-		that are processed. Default ones are <code>[% %]</code>,
+        <li>This templating module allows special marks to be added into the text,
+		which are then processed. The default ones are <code>[% %]</code>,
 		but can be redefined.
         <li>Standard usage of Template Toolkit is for MVC frameworks, where it can be
 		used as a View component to generate XML, plain text, ... and of course
@@ -292,9 +292,9 @@ Include "./_tail.php";
 <div class="slide">
     <h1>ttree</h1>
     <ul>
-        <li>TT has `ttree` command</li>
-        <li>that is made to convert a tree of templates</li>
-        <li>this way <a href="http://bratislava.pm.org/">BA.pm.org</a> is generated</li>
+        <li>TT has a `ttree` command</li>
+        <li>this is used to convert a tree of templates into HTML (or some other output format)</li>
+        <li>this is how <a href="http://bratislava.pm.org/">BA.pm.org</a> is generated</li>
     </ul>
 </div>
 
@@ -327,7 +327,7 @@ Include "./_tail.php";
 	<ul>
 		<li>.tt || .tt-en</li>
 		<li>[% IF lang %]</li>
-		<li>form with Locale::Maketext (+HTML::FormFu)<br/><small>(.yaml -&gt; .tt2)</small></li>
+		<li>feedback form with Locale::Maketext (+HTML::FormFu)<br/><small>(.yaml -&gt; .tt2)</small></li>
 		<li>JavaScript i18n</li>
 	</ul>
 </div>
@@ -338,7 +338,7 @@ Include "./_tail.php";
 		<li>checks input</li>
 		<li>sends email to <a href="http://hiveminder.com/">hiveminder.com</a></li>
 		<li>redirects to /cgi/email-(ok|fail).html</li>
-		<li>anti-spammer prevention</li>
+		<li>anti-spammer protection</li>
 	</ul>
 </div>
 
@@ -382,8 +382,8 @@ Include "./_tail.php";
     <h1>That's it</h1>
     <h2>Thank you!</h2>
 	<ul>
-		<li>for good news use feedback of <a href="http://bratislava.pm.org/contact.html#feedback">ba.pm.org</a></li>
-		<li>any complains please send to <a href="mailto:devnull@ba.pm.org">devnull@ba.pm.org</a> ;-)</li>
+		<li>for good news use feedback form on <a href="http://bratislava.pm.org/contact.html#feedback">ba.pm.org</a></li>
+		<li>any complaints please send to <a href="mailto:devnull@ba.pm.org">devnull@ba.pm.org</a> ;-)</li>
 	</ul>
 	
 </div>

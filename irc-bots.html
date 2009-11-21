@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>IRC Bots</title>
+<!-- metadata -->
+<meta name="version" content="S5 1.1" />
+<meta name="presdate" content="20091115" />
+<meta name="author" content="Jozef Kutej"/>
+<meta name="company" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<!-- <meta name="defaultView" content="outline" /> -->
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+<!-- S5 JS -->
+<script src="ui/default/slides.js" type="text/javascript"></script>
+<!-- syntax highlighting -->
+<link rel="stylesheet" type="text/css" href="ui/sh/sh_style.css" />
+<script type="text/javascript" src="ui/sh/sh_main.js"></script>
+<script type="text/javascript" src="ui/sh/sh_perl.js"></script>
+<script type="text/javascript" src="ui/sh/sh_sql.js"></script>
+<!-- custom -->
+<script src="ui/jquery-1.2.6.js" type="text/javascript"></script>
+<script src="ui/custom.js" type="text/javascript"></script>
+<link rel="stylesheet" href="ui/custom.css" type="text/css" />
+</head>
+
+<body><!--  onload='sh_highlightDocument();' -->
+
+<div class="layout">
+<div id="controls"><!-- DO NOT EDIT --></div>
+<div id="currentSlide"><!-- DO NOT EDIT --></div>
+<div id="header"></div>
+<div id="footer">
+
+<!-- added by Jozef :) -->
+<div id="counter" style="float: right; margin-right: 10px;">30</div>
+<span id="ignoreClicks" />
+
+<h1>18. Nov 2009</h1>
+<h2>IRC Bots</h2>
+
+</div>
+
+</div>
+
+
+<div class="presentation">
+
+<div class="slide">
+    <h1 style="text-align: center;">IRC Bots</h1>
+	<p style="text-align: center; margin: 0px;">
+	<img src='irc-bots/flickr-jelene-2594095295.jpg' alt="robots" />
+	</p>
+	<div style="font-size: xx-small; text-align: center;" xmlns:cc="http://creativecommons.org/ns#"
+	about="http://www.flickr.com/photos/jelene/2594095295/">
+	<a rel="cc:attributionURL" href="http://www.flickr.com/photos/jelene/">jelene</a> / <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a></div>
+	<br/>
+    <h4 style="text-align: center;">Jozef Kutej</h4>
+</div>
+
+<div class="slide">
+	<h1>Warning</h1>
+	<p>I just tried few things out, so the information
+	can be uncomplete or missing.
+	</p>
+	<p>"/me not an expert on this topic"</p>
+</div>
+
+
+<div class="slide">
+	<h1>Agenda</h1>
+	<ul>
+		<li>IRC?</li>
+		<li>IRC modules on CPAN</li>
+		<li>IRC bots on CPAN</li>
+		<li>IRC::Vedma</li>
+		<li>usage?</li>
+	</ul>
+</div>
+
+<div class="slide">
+    <h1>IRC</h1>
+	<ul>
+		<li>looooooong history</li>
+		<li>auth freedom</li>
+		<li>nickname freedom</li>
+		<li>chatroom names freedom</li>
+		<li>probably no more addictive as the addicts moved to social networks</li>
+	</ul>
+</div>
+
+<div class="slide">
+    <h1>IRC modules on CPAN</h1>
+	<ul>
+		<li><a href="http://search.cpan.org/perldoc?Net::IRC">Net::IRC</a></li>
+		<li><a href="http://search.cpan.org/perldoc?POE::Component::IRC">POE::Component::IRC</a></li>
+		<li><a href="http://search.cpan.org/perldoc?AnyEvent::IRC::Client">AnyEvent::IRC::Client</a></li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>IRC bots on CPAN</h1>
+	<ul>
+		<li><a href="http://search.cpan.org/perldoc?IRC::Bot">IRC::Bot</a> (POE)</li>
+		<li><a href="http://search.cpan.org/perldoc?Bot::Pluggable">Bot::Pluggable</a> (POE)</li>
+		<li><a href="http://search.cpan.org/perldoc?Bot::BasicBot">Bot::BasicBot</a> (POE)</li>
+		<li><a href="http://search.cpan.org/perldoc?Morris">Morris</a> (AnyEvent+Moose released 11 Nov 2009)</li>
+	</ul>    
+</div>
+
+
+<div class="slide">
+	<h1>IRC::Vedma</h1>
+	<ul>
+		<li><a href="http://github.com/jozef/IRC-Vedma">http://github.com/jozef/IRC-Vedma</a></li>
+		<li>trust/untrust</li>
+		<li>join</li>
+		<li>yahoo||google search</li>
+		<li>rot13</li>
+		<li>time</li>
+		<li>...</li>
+		<li>fun for 4h</li>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1><a href="http://github.com/jozef/IRC-Vedma/blob/master/script/irc-vedma">IRC::Vedma</a></h1>
+</div>
+
+<div class="slide">
+	<h1><a href="http://search.cpan.org/perldoc?App::Bondage">App::Bondage</a></h1>
+</div>
+
+<div class="slide">
+	<h1>usage?</h1>
+	<ul>
+		<li>fun</li>
+		<li>trainings</li>
+		<li>AnyEvent experience</li>
+		<li>POE experience</li>
+	</ul>    
+</div>
+
+<div class="slide">
+	<h1>"Commercial" usage?</h1>
+	<ul>
+		<li>live news</li>
+		<li>new bug tracking tickets</li>
+		<li>ERROR/FATAL from logs</li>
+		<li>alarms from systems</li>
+	</ul>    
+</div>
+
+<div class="slide">
+    <h1>Thank you!</h1>
+	<div class="singleThink">:-?</div>	
+</div>
+
+
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>Debian-Perl</title>
+<!-- metadata -->
+<meta name="version" content="S5 1.1" />
+<meta name="presdate" content="20081108" />
+<meta name="author" content="Jozef Kutej"/>
+<meta name="company" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!-- configuration parameters -->
+<meta name="defaultView" content="slideshow" />
+<!-- <meta name="defaultView" content="outline" /> -->
+<meta name="controlVis" content="hidden" />
+<!-- style sheet links -->
+<link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+<link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+<link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+<link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+<!-- S5 JS -->
+<script src="ui/default/slides.js" type="text/javascript"></script>
+<!-- syntax highlighting -->
+<link rel="stylesheet" type="text/css" href="ui/sh/sh_style.css" />
+<script type="text/javascript" src="ui/sh/sh_main.js"></script>
+<script type="text/javascript" src="ui/sh/sh_perl.js"></script>
+<script type="text/javascript" src="ui/sh/sh_sql.js"></script>
+<!-- custom -->
+<script src="ui/jquery-1.2.6.js" type="text/javascript"></script>
+<script src="ui/custom.js" type="text/javascript"></script>
+<link rel="stylesheet" href="ui/custom.css" type="text/css" />
+</head>
+
+<body><!--  onload='sh_highlightDocument();' -->
+
+<div class="layout">
+<div id="controls"><!-- DO NOT EDIT --></div>
+<div id="currentSlide"><!-- DO NOT EDIT --></div>
+<div id="header"></div>
+<div id="footer">
+
+<!-- added by Jozef :) -->
+<div id="counter" style="float: right; margin-right: 10px;">20</div>
+<span id="ignoreClicks" />
+
+<h1>1. April 2010</h1>
+<h2>Debian-Perl</h2>
+
+</div>
+
+</div>
+
+
+<div class="presentation">
+
+<div class="slide">
+	<h1>Debian-Perl</h1>
+	<h3>Jozef Kutej</h3>
+</div>
+
+<div class="slide">
+	<h1>agenda</h1>
+	<ul>
+		<li>Debian? Why bother?</li>
+		<li>Debian-Perl ≠ CPAN</li>
+		<li>demistify the .deb</li>
+		<li>demistify the Debian repositories</li>
+		<li>.deb packaging tools and problems</li>
+		<li>some experimets of mine</li>
+		<li>some future?!?!?</li>
+	</ul>
+	
+</div>
+
+<div class="slide">
+	<h1>Debian? Why bother?</h1>
+	<h2>Debian is Perl friendly</h2>
+	<ul>
+		<li>
+			# apt-cache search perl | perl -lane 'print $F[0]' | grep perl | wc -l<br/>
+			1512
+		</li>
+		<li><a href="http://pkg-perl.alioth.debian.org/">Debian-Perl group</a> - easy to join</li>
+		<li>because stable is stable</li>
+		<li>because sid is "bleeding edge"</li>
+		<li>because it is easy to mix the different worlds</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>Debian? Why bother?</h1>
+	<h2>Really good packaging</h2>
+	<ul>
+		<li>dpkg -S /usr/bin/perl</li>
+		<li>apt-file find /usr/bin/perl</li>
+		<li>apt-show-versions perl</li>
+		<li>/var/lib/dpkg/info/perl.list</li>
+		<li>/etc/apt/preferences</li>
+		<li>dh-make-perl --locate Foo::Bar</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>Debian-Perl ≠ CPAN</h1>
+	<ul>
+		<li>1.5k Debian Perl packages ≠ 19k CPAN distributions</li>
+		<li>http://bugs.debian.org/ ≠ http://rt.cpan.org/</li>
+		<li>.deb include custom patches</li>
+		<li>Debian-only Perl modules</li>
+	</ul>
+	
+</div>
+
+<div class="slide">
+	<h1>demistify the .deb</h1>
+	<ul>
+		<li>.deb = ar archive</li>
+		<li>debian-binary (version)<br/>control.tar.gz (control+md5sums)<br/>data.tar.gz (/)</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>demistify the Debian repositories</h1>
+	<ul>
+		<li>"just" a folder (file://, http://, ftp://, cdrom://)</li>
+		<li>can be hosted on anything&trade;</li>
+		<li>dists/<b>distribution</b>/<b>component</b>/Release</li>
+		<li>dists/<b>distribution</b>/<b>component</b>/Contents-<b>arch</b>.gz</li>
+		<li>dists/<b>distribution</b>/<b>component</b>/binary-<b>arch</b>/Packages.gz</li>
+		<li>dists/<b>distribution</b>/<b>component</b>/binary-<b>arch</b>/Release</li>
+		<li>dists/<b>distribution</b>/<b>component</b>/source/Sources.gz</li>
+		<li>dists/<b>distribution</b>/<b>component</b>/source/Release</li>
+	</ul>	
+</div>
+
+<div class="slide">
+	<h1>demistify the Debian repositories</h1>
+	<ul>
+		<li>still <a href="http://wiki.debian.org/HowToSetupADebianRepository">9+1 tools</a> to
+		help to make a repository</li>
+		<li>the +1 is for apt-move</li>
+	</ul>    
+</div>
+
+<div class="slide">
+	<h1>.deb packaging tools</h1>
+	<h2>tools</h2>
+	<ul>
+		<li>dh-* (debhelper) scripts to help</li>
+		<li>pbuilder (cowbuilder)</li>
+		<li>dh-make-perl --cpan App::perlzonji</li>
+		<li>cpan2dist --format CPANPLUS::Dist::Deb --buildprereq --install App::perlzonji</li>
+	</ul>
+</div>
+	
+<div class="slide">
+	<h1>.deb packaging problems</h1>
+	<h2>problems</h2>
+	<ul>
+		<li>versions of dependencies</li>
+		<li>lib dependencies</li>
+	</ul>
+</div>
+
+<div class="slide">
+	<h1>some experimets of mine</h1>
+	<ul>
+		<li><a href="http://search.cpan.org/dist/Parse-Deb-Control/">Parse::Deb::Control</a> (pseudo-RFC-822)</li>
+		<li><a href="http://search.cpan.org/perldoc?CPAN::Patches">CPAN::Patches</a> + <a href="http://search.cpan.org/perldoc?CPAN::Patches::Plugin::Debian">CPAN::Patches::Plugin::Debian</a></li>
+		<li><a href="http://search.cpan.org/perldoc?Debian::Apt::PM">Debian::Apt::PM</a><br/>(apt-pm + dh-make-pm + dpkg-scanpmpackages)</li>
+	</ul>
+	
+</div>
+
+<div class="slide">
+	<h1>some future?!?!?</h1>
+	<ul>
+		<li>whole CPAN autopackaged?<br/>13k sid all + 18k perl</li>
+		<li><a href="http://lists.debian.org/debian-perl/2010/03/msg00052.html">(12-03-2010 17:26:26) dam</a>: 'automatically' ≠ 'maintained'  :)</li>
+		<li>how to "get" <a href="http://pkg-perl.alioth.debian.org/howto/RFP.html">CPAN module into Debian</a></li>
+		<li>Debian-Perl public <a href="http://blogs.perl.org/users/gabor_szabo/2010/03/where-can-i-find-a-catalyst-hosting-company.html">hosting</a>? </li>
+	</ul>
+	
+</div>
+
+<div class="slide">
+	<h1>Perl QA Hackathon 2010 in Vienna + Debian</h1>
+</div>
+
+
+<div class="slide">
+	<h1>Questions?</h1>
+	<div class="singleThing"><img src="images/questions.png" alt=":-?" /></div>
+</div>
+
+</div>
+
+</body>
+</html>

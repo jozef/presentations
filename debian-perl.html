@@ -70,6 +70,7 @@
 		<li>.deb packaging tools and problems</li>
 		<li>some experimets of mine</li>
 		<li>some future?!?!?</li>
+		<li>example</li>
 	</ul>
 	
 </div>
@@ -189,6 +190,63 @@
 	<h1>Perl QA Hackathon 2010 in Vienna + Debian</h1>
 </div>
 
+<div class="slide">
+    <h1>Examples</h1>
+</div>
+
+<div class="slide">
+    <h1>dh-make-perl --cpan Run::Env</h1>
+    
+    <pre>Run-Env-0.03/debian/
+├── changelog
+├── compat
+├── control
+├── copyright
+├── librun-env-perl.docs
+├── rules
+└── watch
+</pre>
+
+</div>
+
+<div class="slide">
+    <h1>dh-make-perl --cpan Run::Env # rules</h1>
+    
+    <pre>#!/usr/bin/make -f
+
+%:
+    dh $@
+</pre>
+
+</div>
+
+<div class="slide">
+    <h1>dh-make-perl --cpan Run::Env # control</h1>
+    
+    <pre style="font-size: 75%">Source: librun-env-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (&gt;= 7)
+Build-Depends-Indep: perl, libcarp-clan-perl, liblist-moreutils-perl
+Maintainer: Jozef Kutej &lt;jozef@kutej.net&gt;
+Standards-Version: 3.8.4
+Homepage: http://search.cpan.org/dist/Run-Env/
+
+Package: librun-env-perl
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, libcarp-clan-perl,
+  liblist-moreutils-perl
+Description: running environment detection
+ Usefull in cases if the program/script should behave in slightly different
+ way depending on if it's run on developers machine, staging server or a
+ production server.
+</pre>
+
+</div>
+
+<div class="slide">
+    <h1>then just<br/>`debuild` || `pdebuild`</h1>
+</div>
 
 <div class="slide">
 	<h1>Questions?</h1>

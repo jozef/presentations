@@ -30,3 +30,12 @@
 .red {
 	color: red;
 }
+
+/* no words uppercasing in slides heading */
+.slide h1 {
+	text-transform: none;
+}
+
+.slide li {
+	margin-top: 0.25em;
+}

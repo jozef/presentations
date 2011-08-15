@@ -56,9 +56,9 @@
 <div class="presentation">
 
 <div class="slide">
-    <h1 style="text-align: center;">&nbsp;</h1>
+	<h2>&nbsp;</h2>
     <h1 style="text-align: center;">Demystify file system hierarchy for deployments</h1>
-	<h2 style="text-align: center;">16 August 2011</h2>
+	<h2 style="text-align: center;"><br/>jkutej@cpan.org<br/>16 August 2011</h2>
 </div>
 
 <div class="slide">
@@ -66,14 +66,22 @@
 	<ul>
 		<li>UNIX file-systems overview - FHS</li>
 		<li>server layouts</li>
-		<li>ways how does the code goes from dev machine to production</li>
+		<li>ways how does the code goes from ☢ dev machine to ☑ production</li>
+		<li>Perl code life-cycle ♲</li>
+		<li>Perl code layers ☰</li>
 		<li>Sys::Path + Module::Build::SysPath</li>
-		<li>Debian Linux packaging</li>
 		<li>DarkPAN tools</li>
-		<li>some extras if time permits</li>
 	</ul>    
 </div>
 
+<div class="slide">
+	<h1>What to expect?</h1>
+	<ul>
+		<li>1. OS is for you</li>
+		<li>2. Perl code and deployments</li>
+		<li>3. Related Perl modules</li>
+	</ul>    
+</div>
 
 <div class="slide">
 	<h1>Why?</h1>
@@ -85,6 +93,7 @@
 		<li>eliminate developer fear of the production OS</li>
 		<li>replace if with concern about operation costs, consistency and maintainability</li>
 		<li>show couple of tools and techniques of deployment</li>
+		<li>to learn something new!</li>
 	</ul>    
 </div>
 
@@ -138,7 +147,7 @@ sub ask {
 
 
 <div class="slide">
-	<h1>Where do we start?</h1>
+	<h1>1. OS for you</h1>
 </div>
 
 <div class="slide">
@@ -155,6 +164,16 @@ sub ask {
 </div>
 
 <div class="slide">
+	<h1>Why not to fear OS?</h1>
+	<ul>
+		<li>100 ways to create &amp; use &amp; destroy it</li>
+		<li>Xen, KVM, VirtualBox, VMWare, ...</li>
+		<li>`sudo chroot /srv/chroot/machine_name/ su - you -c 'cd prog; bash'`</li>
+	</ul>    
+</div>
+
+
+<div class="slide">
 	<h1>OS</h1>
 	<p>
 		So OS is just a bunch of files in different folders
@@ -162,27 +181,61 @@ sub ask {
 		besides making our project to run, to be live.
 	</p>
 	<p>
-		OS is the bogus (but important) stuff that we need for our project,
-		not the other way around.
+		OS is that stuff that we need for our project.
 	</p>
 </div>
 
 <div class="slide">
 	<h1>What do we need from OS?</h1>
-	<h2>Or what's beyond Perl lib/ and bin/</h2>
 	<ul>
+		<li>Perl lib/ + bin/</li>
 		<li>cron jobs</li>
-		<li>deamons (needs to be started on boot)</li>
-		<li>configs</li>
+		<li>daemons</li>
+		<li>config files</li>
 		<li>lock files</li>
 		<li>temp files</li>
 		<li>templates</li>
-		<li>css|js|images</li>
-		<li>store pre-generated data</li>
+		<li>css|js|images files</li>
+		<li>store pre-generated data files</li>
 		<li>.so libs</li>
 	</ul>    
 </div>
 
+<div class="slide">
+	<h1>Where is Perl?</h1>
+	<ul>
+		<li>/usr/bin/perl</li>
+		<li>/usr/local/bin/perl</li>
+		<li>/what-ever/bin/perl</li>
+		<li>$HOME/local/bin/perl</li>
+		<li>$HOME/perl5/perlbrew/perls/current/bin/perl</li>
+		<li>C:\strawberry</li>
+		<li>...</li>
+	</ul>    
+</div>
+
+<div class="slide">
+	<h1>Where are configurtion and data files?</h1>
+	<ul style="font-size: 75%">
+		<li> /etc/ + /usr/ + /var/ + /srv/ </li>
+		<li> /usr/local/ + /var/local/</li>
+		<li> /opt/ </li>
+		<li> /srv/ </li>
+		<li> File::ShareDir </li>
+		<li> File::HomeDir </li>
+		<li> /my-project/ || /my-company/ || /local/ || /shared/ || /data/ || /.../ </li>
+		<li> ./ </li>
+		<li> "C:\Documents and Settings\All Users\Application Data" </li>
+		<li> __DATA__ </li>
+		<li> MyApp::Config </li>
+		<li> MyApp::ConfigData </li>
+		<li> wherever </li>
+		<li> don't remember, let me check </li>
+		<li> /dev/null </li>
+		<li> somewhere else</li>
+	</ul>    
+	<p style="text-align: center;"><a href="http://perlmonks.org/?node_id=919265">http://perlmonks.org/?node_id=919265</a></p>
+</div>
 
 <div class="slide">
 	<h1>Filesystem Hierarchy Standard</h1>
@@ -198,58 +251,6 @@ sub ask {
 </div>
 
 <div class="slide">
-	<h1>Places for config and data files?</h1>
-	<ul style="font-size: 75%">
-		<li> /usr/local/ + /var/local/</li>
-		<li> /opt/ </li>
-		<li> /srv/ </li>
-		<li> /etc/ + /usr/ + /var/ + /srv/ </li>
-		<li> File::ShareDir </li>
-		<li> File::HomeDir </li>
-		<li> /my-project/ || /my-company/ || /local/ || /shared/ || /data/ || /.../ </li>
-		<li> ./ </li>
-		<li> "C:\Documents and Settings\All Users\Application Data" </li>
-		<li> __DATA__ </li>
-		<li> MyApp::Config </li>
-		<li> wherever </li>
-		<li> don't remember, let me check </li>
-		<li> /dev/null </li>
-		<li> somewhere else</li>
-	</ul>    
-	<p style="text-align: center;"><a href="http://perlmonks.org/?node_id=919265">http://perlmonks.org/?node_id=919265</a></p>
-</div>
-
-<div class="slide">
-	<h1>Where is the Perl?</h1>
-	<ul>
-		<li>/usr/bin/perl</li>
-		<li>/usr/local/bin/perl</li>
-		<li>/what-ever/bin/perl</li>
-		<li>$HOME/local/bin/perl</li>
-		<li>$HOME/perl5/perlbrew/perls/current/bin/perl</li>
-		<li>C:\strawberry</li>
-	</ul>    
-</div>
-
-<div class="slide">
-	<h1>How to install Perl code?</h1>
-	<ul>
-		<li>via CPAN shell -
-			<ul>
-				<li>public from CPAN + private by hand or not at all</li>
-				<li>from DPAN (CPAN::Mini::Inject)</li>
-				<li>local::lib</li>
-				<li>perlbrew</li>
-			</ul>
-		</li>
-		<li>via checkouts - whole codebase in VC</li>
-		<li>via distribution packaging</li>
-		<li>via PAR/Shipwright</li>
-		<li>via project folder - rsync or NFS</li>
-	</ul>    
-</div>
-
-<div class="slide">
 	<h1>OS is there for our project!</h1>
 	<ul>
 		<li>/usr/bin/perl</li>
@@ -258,47 +259,27 @@ sub ask {
 	</ul>    
 </div>
 
-
 <div class="slide">
-	<h1>Sys::Path</h1>
-	<h2>supply autoconf style installation directories</h2>
-	
-	<pre style="font-size: 75%">
-print Sys::Path->sysconfdir, "\n";
-# /etc
-print Sys::Path->datadir, "\n";
-# /usr/share
-print Sys::Path->logdir, "\n";
-# /var/log
-
-print Sys::Path->sysconfdir, "\n";
-# /home/daxim/local/etc
-print Sys::Path->datadir, "\n";
-# /home/daxim/local/share
-print Sys::Path->logdir, "\n";
-# /home/daxim/local/log
-	</pre>
+	<h1>2. Perl code and deployments</h1>
 </div>
 
+
 <div class="slide">
-	<h1>Module::Build::SysPath </h1>
-	<h2>Build.PL</h2>
-	<pre>
-my $builder = Module::Build::SysPath->new(
-    module_name        => 'Debian::Apt::PM',
-	configure_requires => {
-		'Module::Build::SysPath' => 0.13,
-	},
-	</pre>
-	
-	<h2>Debian::Apt::PM::SPc</h2>
-	<pre>
-sub prefix        { use Sys::Path; Sys::Path->find_distribution_root(__PACKAGE__); };
-sub localstatedir { __PACKAGE__->prefix };
-sub sysconfdir    { File::Spec->catdir(__PACKAGE__->prefix, 'etc') };
-sub datadir       { File::Spec->catdir(__PACKAGE__->prefix, 'share') };
-sub logdir        { File::Spec->catdir(__PACKAGE__->localstatedir, 'log') };
-	</pre>
+	<h1>How to install Perl code?</h1>
+	<ul>
+		<li>via distribution packaging</li>
+		<li>via CPAN shell || Build install || make install -
+			<ul>
+				<li>public from CPAN + private by hand or not at all</li>
+				<li>from DPAN (CPAN::Mini::Inject)</li>
+				<li>local::lib</li>
+				<li>perlbrew</li>
+			</ul>
+		</li>
+		<li>via checkouts - whole codebase in VC</li>
+		<li>via project folder - rsync or NFS</li>
+		<li>via PAR/Shipwright</li>
+	</ul>    
 </div>
 
 <div class="slide">
@@ -326,11 +307,12 @@ sub logdir        { File::Spec->catdir(__PACKAGE__->localstatedir, 'log') };
 		☘&nbsp;sales <big><b>→</b></big>
 		⚔&nbsp;negotiations <big><b>→</b></big>
 		☐&nbsp;specification <big><b>→</b></big>
+		✍&nbsp;contract <big><b>→</b></big>
 		⚒&nbsp;developer <big><b>→</b></big>
 		☢&nbsp;development machine <big><b>→</b></big>
 		☀&nbsp;version control <big><b>→</b></big>
 		☔&nbsp;user-acceptance machine <big><b>↔</b></big>
-		☇&nbsp;quality assurance review big><b>↔</b></big>
+		☇&nbsp;quality assurance review <big><b>↔</b></big>
 		☠&nbsp;customer review <big><b>→</b></big>
 		☃&nbsp;release tag <big><b>→</b></big>
 		𝄞&nbsp;packaging (tarball||dist)<big><b>→</b></big>
@@ -341,12 +323,12 @@ sub logdir        { File::Spec->catdir(__PACKAGE__->localstatedir, 'log') };
 		☕&nbsp;another job well done <big><b>→</b></big>
 		☻&nbsp;happy customer <big><b>→</b></big>
 		☻☺&nbsp;more customers <big><b>→</b></big>
-		$€₤¥&nbsp;money
+		$€₤¥&nbsp;money &amp;&amp; ♥♡♥♡&nbsp;our job
 	</p>
 </div>
 
 <div class="slide">
-	<h1>How many server did you count?</h1>
+	<h1>How many server types did you count?</h1>
 </div>
 
 <div class="slide">
@@ -376,7 +358,7 @@ sub logdir        { File::Spec->catdir(__PACKAGE__->localstatedir, 'log') };
 		<dd>code repository, DPAN, Pod, wiki?, Debian repo, batch results</dd>
 		
 		<dt>batch</dt>
-		<dd>auto packaging (.tar.gz, .deb), smoke-testing, statistics computing</dd>
+		<dd>auto packaging (.tar.gz, .deb), smoke-testing, statistics processing</dd>
 		
 		<dt>monitoring</dt>
 		<dd>ops maintenance server</dd>
@@ -397,24 +379,159 @@ sub logdir        { File::Spec->catdir(__PACKAGE__->localstatedir, 'log') };
 </div>
 
 <div class="slide">
-	<h1>Time for some more ides?</h1>
+	<h1>3. Related Perl modules</h1>
 </div>
 
 <div class="slide">
-	<h1>Ideas?</h1>
+	<h1>Why Sys::Path?</h1>
+</div>
+
+<div class="slide">
+	<h1>Sys::Path</h1>
+	<h2>supply autoconf style installation directories</h2>
+	
+	<pre style="font-size: 75%">
+print Sys::Path->sysconfdir, "\n";
+# /etc
+print Sys::Path->datadir, "\n";
+# /usr/share
+print Sys::Path->logdir, "\n";
+# /var/log
+
+print Sys::Path->sysconfdir, "\n";
+# /home/daxim/local/etc
+print Sys::Path->datadir, "\n";
+# /home/daxim/local/share
+print Sys::Path->logdir, "\n";
+# /home/daxim/local/log
+	</pre>
+</div>
+
+<div class="slide">
+	<h1>$Config::Config{'prefix'}<br/>eq<br/>'/usr'</h1>
+</div>
+
+<div class="slide">
+	<h1>Why Module::Build::SysPath?</h1>
+</div>
+
+<div class="slide">
+	<h1>Module::Build::SysPath </h1>
+	<h2>Build.PL</h2>
+	<pre>
+my $builder = Module::Build::SysPath->new(
+    module_name        => 'Debian::Apt::PM',
+	configure_requires => {
+		'Module::Build::SysPath' => 0.13,
+	},
+	</pre>
+</div>
+	
+<div class="slide">
+	<h1>Module::Build::SysPath </h1>
+	<h2>YourApp::SPc</h2>
+	<pre style="font-size: 75%">
+sub prefix { ↲
+	use Sys::Path; ↲
+	Sys::Path->find_distribution_root(__PACKAGE__); ↲
+};
+sub localstatedir ↲
+{ __PACKAGE__->prefix }; ↲
+sub sysconfdir ↲
+{ File::Spec->catdir(__PACKAGE__->prefix, 'etc') };
+sub datadir ↲
+{ File::Spec->catdir(__PACKAGE__->prefix, 'share') };
+sub cachedir ↲
+{ File::Spec->catdir(__PACKAGE__->localstatedir, 'cache') };
+sub logdir ↲
+{ File::Spec->catdir(__PACKAGE__->localstatedir, 'log') };
+...
+	</pre>
+</div>
+
+<div class="slide">
+	<h1>Module::Build::SysPath </h1>
+	<h2>YourApp::SPc after install</h2>
+	<pre style="font-size: 75%">
+sub prefix { ↲
+	use Sys::Path; ↲
+	Sys::Path->find_distribution_root(__PACKAGE__); ↲
+};
+sub sysconfdir {'/etc'}
+sub datadir {'/usr/share'};
+sub cachedir {'/var/cache'};
+sub sharedstatedir {'/var/lib'};
+	</pre>
+</div>
+
+<div class="slide">
+	<h1>Sys::Path Module::Build::SysPath bonus =&gt; /etc</h1>
+</div>
+
+<div class="slide">
+	<h1>CPAN::Mini::Inject</h1>
 	<ul>
-		<li>Debian::Apt::PM</li>
-		<li>CPAN::Patches + CPAN::Patches::Plugin::Debian</li>
-		<li>CPAN::Mini::Inject</li>
-		<li>Pod::POM::Web trick</li>
-		<li>Build::Daily</li>
-		<li>Test::Daily</li>
+		<li>CPAN::Mini</li>
+		<li>+custom tarballs</li>
+		<li>
+			mcpani --authorid LOCAL --add \<br/>
+			&nbsp; --discover-packages --file dark-01.tar.gz
+		</li>
 	</ul>    
 </div>
 
+<div class="slide">
+	<h1>CPAN::Mini::Webserver</h1>
+</div>
 
 <div class="slide">
-	<h1>Any answers?</h1>
+	<h1>Pod::POM::Web + trick</h1>
+</div>
+
+<div class="slide">
+	<h1>Debian::Apt::PM</h1>
+	<ul>
+		<li>apt-pm</li>
+		<li>dh-make-pm (uses cpan-patches)</li>
+		<li>dpkg-scanpmpackages</li>
+		<li>apt-pm-web<br/>(<a href="http://pkg-perl.alioth.debian.org/cpan2deb/">http://pkg-perl.alioth.debian.org/cpan2deb/</a>)</li>
+	</ul>    
+</div>
+
+<div class="slide">
+	<h1>CPAN::Patches</h1>
+	<ul>
+		<li>cd Some-Distribution</li>
+    	<li>cpan-patches list</li>
+    	<li>cpan-patches patch</li>
+		<li> || cpan-patches update-debian
+			<br/>CPAN::Patches::Plugin::Debian</li>
+	</ul>    
+</div>
+
+<div class="slide">
+	<h1>Sum up</h1>
+	<ul>
+		<li>go and break the OS in a bad way</li>
+		<li>then rebuild the process step-by-step</li>
+		<li>go for multi-server design</li>
+	</ul>    
+</div>
+
+<div class="slide">
+	<h1>What's the vision?</h1>
+	<ul>
+		<li>past - present - future</li>
+		<li>have the similar tool for DPAN as CPAN has</li>
+		<li>add distribution layer over C|DPAN</li>
+		<li>time snapshoting distribution repositories</li>
+		<li>make machine ♲ part of a deployment processes</li>
+		<li>A/B testing old/new testing killing the wrong attempt</li>
+	</ul>    
+</div>
+
+<div class="slide">
+	<h1>Thanks!<br/>Any answers?</h1>
 </div>
 
 </body>

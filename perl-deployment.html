@@ -177,7 +177,7 @@ sub ask {
 	<h1>OS</h1>
 	<p>
 		So OS is just a bunch of files in different folders
-		or a collection that has no special meening
+		or a collection that has no special meaning
 		besides making our project to run, to be live.
 	</p>
 	<p>
@@ -191,7 +191,7 @@ sub ask {
 		<li>Perl lib/ + bin/</li>
 		<li>cron jobs</li>
 		<li>daemons</li>
-		<li>config files</li>
+		<li>config files (self, sites-enabled, logrotate.d, …)</li>
 		<li>lock files</li>
 		<li>temp files</li>
 		<li>templates</li>
@@ -242,8 +242,8 @@ sub ask {
 	<ul>
 		<li>/etc</li>
 		<li>/home</li>
-		<li>/usr (share|doc|)</li>
-		<li>/var (cache|log|lock|run|spool|...)</li>
+		<li>/usr (share|doc|…)</li>
+		<li>/var (cache|log|lock|run|spool|lib|…)</li>
 		<li>/srv</li>
 		<li>/opt</li>
 		<li>... (<a href="http://www.pathname.com/fhs/">http://www.pathname.com/fhs/</a>)</li>
@@ -274,6 +274,7 @@ sub ask {
 				<li>from DPAN (CPAN::Mini::Inject)</li>
 				<li>local::lib</li>
 				<li>perlbrew</li>
+				<li>Git::CPAN::Hook</li>
 			</ul>
 		</li>
 		<li>via checkouts - whole codebase in VC</li>
@@ -387,28 +388,28 @@ sub ask {
 </div>
 
 <div class="slide">
+	<h1>$Config::Config{'prefix'}<br/>eq<br/>'/usr'</h1>
+</div>
+
+<div class="slide">
 	<h1>Sys::Path</h1>
 	<h2>supply autoconf style installation directories</h2>
 	
 	<pre style="font-size: 75%">
-print Sys::Path->sysconfdir, "\n";
+say Sys::Path->sysconfdir;
 # /etc
-print Sys::Path->datadir, "\n";
+say Sys::Path->datadir;
 # /usr/share
-print Sys::Path->logdir, "\n";
+say Sys::Path->logdir;
 # /var/log
 
-print Sys::Path->sysconfdir, "\n";
+say Sys::Path->sysconfdir;
 # /home/daxim/local/etc
-print Sys::Path->datadir, "\n";
+say Sys::Path->datadir;
 # /home/daxim/local/share
-print Sys::Path->logdir, "\n";
+say Sys::Path->logdir;
 # /home/daxim/local/log
 	</pre>
-</div>
-
-<div class="slide">
-	<h1>$Config::Config{'prefix'}<br/>eq<br/>'/usr'</h1>
 </div>
 
 <div class="slide">
